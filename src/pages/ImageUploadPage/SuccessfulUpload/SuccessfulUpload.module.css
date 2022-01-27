@@ -1,0 +1,86 @@
+.successfulUploadContainer {
+  height: auto;
+  width: 70%;
+  max-width: 400px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0px 0px 40px 25px rgba(16, 19, 29, 0.8);
+}
+
+figure {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.uploadIcon {
+    margin: 15px 0 5px 0;
+    height: 50px;
+    width: 50px;
+    background-image: url('../../../assets/checkmark.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.imagePreview {
+  height: 275px;
+  width: 100%;
+  position: relative;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef4f8;
+  border: none;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.imageLinkWrapper {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  border: solid rgb(212, 212, 212) 1px;
+  border-radius: 5px;
+  background-color: #ebebeb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px 0;
+}
+
+.copyLinkButton {
+  width: auto;
+  height: 100%;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  background-color: #0084ff;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  padding: 10px 15px;
+}
+.copyLinkButton:hover {
+  background-color: #0077e6;
+}
+
+.imageLink {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.titleText {
+  font-weight: 300;
+  font-size: 26px;
+}
