@@ -1,7 +1,14 @@
 import React from "react";
 import styles from "./ImageUpload.module.css";
+import { getStorage, ref } from "firebase/storage";
 
 const ImageUpload = () => {
+
+  const storage = getStorage();
+  const storageRef = ref(storage);
+
+  const [imageData, setImageData] = useState();
+
   return (
     <div className={styles.uploaderContainer}>
       <form>
@@ -15,13 +22,6 @@ const ImageUpload = () => {
           <label className={`${styles.dragFileInputLabel}`}>
             <input type="file"></input>
           </label>
-        </div>
-        <div className={`${styles.uploadPreview}`}>
-          {/* <img
-            className={`uploadedImage ${styles.uploadedImage}`}
-            src="#"
-            alt="A preview of your uploaded file"
-          ></img> */}
         </div>
         <p className={styles.smallFormText}>Or</p>
         <label className={styles.chooseFileButton}>

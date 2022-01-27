@@ -6,6 +6,7 @@
   border-radius: 10px;
   padding: 30px;
   text-align: center;
+  box-shadow: 0px 0px 40px 25px rgba(16,19,29,.8);
 }
 
 form {
@@ -44,7 +45,7 @@ form {
 }
 
 .dragDropArea {
-  height: 200px;
+  height: 275px;
   width: 100%;
   position: relative;
   flex-direction: column;
@@ -62,7 +63,7 @@ form {
 }
 
 .uploadIcon {
-  background-image: url("../../assets/AddImageIcon.svg");
+  background-image: url("../../../assets/AddImageIcon.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -70,19 +71,6 @@ form {
   width: 70px;
   padding-bottom: 30px;
 }
-
-.uploadPreview {
-  display: none;
-  height: 60%;
-}
-
-.uploadedImage {
-  max-height: 200px;
-  max-width: 200px;
-  margin: auto;
-  padding: 20px;
-}
-
 
 .titleFormText {
     font-weight: 300;

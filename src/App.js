@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from './pages/LoginPage/Login';
 import Register from './pages/RegisterPage/Register';
-import ImageUpload from './pages/ImageUploadPage/ImageUpload';
+import ImageUploadPage from './pages/ImageUploadPage/ImageUploadPage';
 
 function App() {
 
@@ -27,16 +27,10 @@ function App() {
     </Routes>
   )
 
-  const imageUpload = (
-    <Routes>
-      <Route exact path="/imageupload" element={<ImageUpload/>} /> 
-    </Routes>
-  )
-
   return (
     <div className="app">
       <BrowserRouter>
-        {isLoggedIn ? imageUpload : signInPages}
+        {isLoggedIn ? <ImageUploadPage/> : signInPages}
       </BrowserRouter>
     </div>
   );
