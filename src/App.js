@@ -12,11 +12,11 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-  useEffect(() => {
-    ImageApi.testFetchCall()
-      .then(res => res.json())
-      .then(data => { console.log(data.express); setTestApiData(data.express); setIsLoading(false) });
-  }, [])
+  // useEffect(() => {
+  //   ImageApi.testFetchCall()
+  //     .then(res => res.json())
+  //     .then(data => { console.log(data.express); setTestApiData(data.express); setIsLoading(false) });
+  // }, [])
 
   //may run into issue where user types URL into bar and receives login/register even through already logged in. 
   //If logged in should redirect to homepage when trying to access register/login.
