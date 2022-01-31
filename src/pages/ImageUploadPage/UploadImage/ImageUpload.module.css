@@ -25,14 +25,14 @@ form {
   align-items: center;
   justify-content: center;
   margin-top: 20px;
-  background-color: #0084ff;
+  background-color: #027bec;;
   border: none;
   border-radius: 7px;
   color: white;
   padding: 10px 15px;
 }
 .chooseFileButton:hover {
-    background-color: #0077e6;
+    background-color: #0070da;
 }
 
 .dragFileInputLabel {

@@ -1,6 +1,6 @@
 import './App.css';
 import ImageApi from './ui-api/ImageApi';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from './pages/LoginPage/Login';
 import Register from './pages/RegisterPage/Register';
@@ -8,9 +8,7 @@ import ImageUploadPage from './pages/ImageUploadPage/ImageUploadPage';
 
 function App() {
 
-  const [testApiData, setTestApiData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // useEffect(() => {
   //   ImageApi.testFetchCall()
@@ -22,8 +20,8 @@ function App() {
   //If logged in should redirect to homepage when trying to access register/login.
   const signInPages = (
     <Routes>
-      <Route exact path="/" element={<Login/>} />
-      <Route exact path="/register" element={<Register/>} />
+      <Route exact path="/login" element={<Login/>} />
+      <Route exact path="/" element={<Register/>} />
     </Routes>
   )
 
