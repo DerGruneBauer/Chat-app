@@ -17,3 +17,11 @@ body {
 a:hover, button:hover {
   cursor: pointer;
 }
+
+a {
+  text-decoration: none;
+}
+
+input:focus {
+  outline: none;
+}
