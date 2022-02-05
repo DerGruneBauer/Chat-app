@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./ImageUpload.module.css";
+import {firebaseApp} from "../../../firebase";
 
 const ImageUpload = (props) => (
   <div className={styles.uploaderContainer}>
