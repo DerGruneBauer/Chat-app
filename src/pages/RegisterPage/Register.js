@@ -34,20 +34,17 @@ import googleIcon from "../../assets/googleIcon.svg";
 import facebookIcon from "../../assets/facebookIcon.svg";
 import githubIcon from "../../assets/githubIcon.svg";
 
-const Register = () => {
+const Register = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [user, loading, error] = useAuthState(auth);
-  // const history = useHistory();
+  const navigate = useNavigate();
+
   const register = () => {
-    if (!name) alert("Please enter name");
-    registerWithEmailAndPassword(name, email, password);
+      registerWithEmailAndPassword(email, password);
+      props.register(true);
   };
-  // useEffect(() => {
-  //   if (loading) return;
-  //   if (user) history.replace("/dashboard");
-  // }, [user, loading]);
 
   return (
     <div className={styles.loginContainer}>
@@ -62,7 +59,7 @@ const Register = () => {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore incididunt ut labore.
       </p>
-      <form>
+      
         <label className={styles.loginInputLabel}>
           <svg className={styles.emailIcon} />
           <input
@@ -85,12 +82,11 @@ const Register = () => {
         </label>
         <button
           className={styles.submitButton}
-          onClick={() => signInWithEmailAndPassword(email, password)}
-          type="submit"
+          onClick={register}
         >
           Start chatting now
         </button>
-      </form>
+      
       <p className={styles.loginSubtext}>
         Or continue with one of the following socials
       </p>

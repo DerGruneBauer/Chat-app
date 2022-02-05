@@ -8,6 +8,10 @@
     align-items: center;
 }
 
+.socialMediaButtonContainer:hover {
+    cursor: pointer;
+}
+
 .socialIcon {
     height: 20px;
     width: 20px;

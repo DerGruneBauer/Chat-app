@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import SocialMediaButton from "../../components/SocialMediaButton/SocialMediaButton";
@@ -49,7 +49,6 @@ const Login = () => {
       <p className={styles.loginLargeText}>
         Login
       </p>
-      <form>
         <label className={styles.loginInputLabel}>
           <svg className={styles.emailIcon} />
           <input
@@ -72,12 +71,10 @@ const Login = () => {
         </label>
         <button
           className={styles.submitButton}
-          onClick={() => signInWithEmailAndPassword(email, password)}
-          type="submit"
+          onClick={signInWithEmailAndPassword(email, password)}
         >
           Login
         </button>
-      </form>
       <p className={styles.loginSubtext}>
         Or continue with one of the following socials
       </p>
