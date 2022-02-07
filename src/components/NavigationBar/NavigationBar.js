@@ -6,7 +6,6 @@ import exploreIcon from "../../assets/explore.svg";
 import { useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
-
   const navigate = useNavigate();
 
   const [navigationIcons, setNavigationIcons] = useState([
@@ -15,21 +14,21 @@ const NavigationBar = () => {
       name: "homeIcon",
       image: homeIcon,
       isActive: true,
-      pageComponent: "/"
+      pageComponent: "/",
     },
     {
       id: 1,
       name: "exploreIcon",
       image: exploreIcon,
       isActive: false,
-      pageComponent: "/explore"
+      pageComponent: "/explore",
     },
     {
       id: 2,
       name: "bookmarkIcon",
       image: bookmarkIcon,
       isActive: false,
-      pageComponent: "/bookmarks"
+      pageComponent: "/bookmarks",
     },
   ]);
 
@@ -62,13 +61,12 @@ const NavigationBar = () => {
         updateSelectedIcon(icon.id);
         navigate(`${icon.pageComponent}`);
       }}
-      className={styles.navButton}
     >
       <img
         src={icon.image}
-        className={`${styles.icon} ${
+        className={
           icon.isActive ? styles.selectedIconColor : styles.unselectedIconColor
-        }`}
+        }
       ></img>
     </button>
   ));
@@ -77,9 +75,9 @@ const NavigationBar = () => {
     <div
       key={bar.id}
       id={bar.id}
-      className={`${styles.slidingBar} ${
+      className={
         bar.isActive ? styles.activeSlidingBar : styles.unactiveSlidingBar
-      }`}
+      }
     ></div>
   ));
 

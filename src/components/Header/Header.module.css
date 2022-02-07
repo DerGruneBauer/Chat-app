@@ -9,7 +9,7 @@
     border-bottom: 1px solid rgb(226, 226, 226);
 }
 
-.headerLogo {
+.headerContainer > svg {
     height: 40px;
     width: 40px;
     opacity: .6;
@@ -20,9 +20,11 @@
     background-size: contain;
 }
 
-.userIcon {
+.headerContainer > img {
     height: 40px;
     width: 40px;
     margin-right: 15px;
-    border: solid black 1px;
+    border: solid lightgray 1px;
+    border-radius: 5px;
+    background-color: lightgray;
 }

@@ -13,7 +13,7 @@ import Explore from "./pages/ExplorePage/Explore";
 import Bookmarks from "./pages/BookmarksPage/Bookmarks";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   // useEffect(() => {
   //   ImageApi.testFetchCall()

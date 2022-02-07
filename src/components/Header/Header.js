@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Header.module.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = (props) => {
   
+  const navigate = useNavigate();
+
+  const navigateToHome = () => {
+    navigate("/");
+  }
+
   const handleModal = () =>
     props.updateModalDisplay(props.modalStatus ? false : true);
 
   return (
     <nav className={styles.headerContainer}>
-      <Link to="/"><svg className={styles.headerLogo}></svg></Link>
-      <div className={styles.userIcon} onClick={handleModal}></div>
+      <svg onClick={navigateToHome}></svg>
+      <img onClick={handleModal} />
     </nav>
   );
 };

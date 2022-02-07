@@ -13,7 +13,7 @@
   justify-content: space-between;
 }
 
-.modalButton {
+.modalContainer > button {
   background-color: transparent;
   border: none;
   display: flex;
@@ -23,7 +23,7 @@
   border-radius: 10px;
 }
 
-.modalButton:hover {
+.modalContainer > button:hover {
   background-color: #EFEFEF;
 }
 
@@ -35,6 +35,6 @@
   filter: invert(18%) sepia(70%) saturate(4947%) hue-rotate(339deg) brightness(79%) contrast(112%);
 }
 
-.modalButton > img {
+button > img {
   margin-right: 10px;
 }
