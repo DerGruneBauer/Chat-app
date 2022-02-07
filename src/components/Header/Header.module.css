@@ -1,10 +1,12 @@
-nav {
+.headerContainer {
     height: auto;
     width: 100%;
     padding: 10px 0;
-    border-bottom: solid red 1px;
     display: flex;
     justify-content: space-between;
+    background-color: white;
+    box-shadow: 0px 9px 16px 1px rgba(0,0,0,0.08);
+    border-bottom: 1px solid rgb(226, 226, 226);
 }
 
 .headerLogo {

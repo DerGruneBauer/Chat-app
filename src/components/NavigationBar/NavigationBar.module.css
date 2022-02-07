@@ -1,0 +1,68 @@
+.navBar {
+  height: auto;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0px -9px 16px 1px rgba(65, 38, 38, 0.08);
+  border-top: 1px solid rgb(226, 226, 226);
+}
+
+.navIconsContainer {
+    width: 100%;
+    padding: 10px 0;
+    display: flex;
+  justify-content: space-around;
+}
+.slidingBarContainer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.slidingBar {
+    width: 20%;
+}
+
+.activeSlidingBar {
+    border: 1px solid #2f64d6;
+    border-radius: 10px;
+    height: 2px;
+    background-color: #2f64d6;
+}
+
+.unactiveSlidingBar {
+    border: none;
+}
+
+.navButton {
+    width: 30%;
+    border-radius: 5px;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+  height: 30px;
+  width: 30px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.selectedIconColor {
+   filter: invert(28%) sepia(89%) saturate(1111%) hue-rotate(200deg) brightness(103%) contrast(97%);
+}
+
+.unselectedIconColor {
+    filter: invert(76%) sepia(9%) saturate(4%) hue-rotate(314deg) brightness(90%) contrast(87%);
+}
+
+
+@media screen and (min-width: 770px) {
+    .navButton:hover {
+        background-color: #EFEFEF;
+    }
+  }
+

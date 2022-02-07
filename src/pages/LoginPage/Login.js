@@ -79,6 +79,7 @@ const Login = () => {
         Or continue with one of the following socials
       </p>
       <div className={styles.socialMediaLoginContainer}>
+        {/* use a map here */}
         <SocialMediaButton socialIcon={googleIcon} onClick={signInWithGoogle} />
         <SocialMediaButton socialIcon={facebookIcon} />
         <SocialMediaButton socialIcon={githubIcon} />

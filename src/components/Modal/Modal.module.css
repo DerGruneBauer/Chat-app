@@ -1,0 +1,40 @@
+.modalContainer {
+  height: auto;
+  width: auto;
+  border: solid lightgray 1px;
+  background-color: white;
+  border-radius: 10px;
+  position: absolute;
+  right: 10px;
+  top: 70px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modalButton {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 10px 55px 10px 10px;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.modalButton:hover {
+  background-color: #EFEFEF;
+}
+
+.signOut {
+  color: red;
+}
+
+.signOut >img {
+  filter: invert(18%) sepia(70%) saturate(4947%) hue-rotate(339deg) brightness(79%) contrast(112%);
+}
+
+.modalButton > img {
+  margin-right: 10px;
+}
