@@ -82,6 +82,12 @@ label > svg {
   background-color: #0070da;
 }
 
+.loginContainer span {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
 .socialMediaLoginContainer {
   width: 90%;
   margin: 20px auto;
@@ -99,12 +105,16 @@ label > svg {
 
 .loginMainText {
   font-size: 13px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color:rgb(99, 99, 99);
 }
 
 .loginLargeText {
   font-size: 18px;
+}
+
+.error {
+  border: solid 1px red !important;
 }
 
 @media screen and (min-width: 480px) {

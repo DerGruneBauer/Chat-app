@@ -13,6 +13,7 @@ import githubIcon from "../../assets/githubIcon.svg";
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const login = async (event) => {
@@ -20,20 +21,24 @@ const Login = (props) => {
     let user = await logInWithEmailAndPassword(event, email, password);
     if(user instanceof Error) {
       console.log("error logging in");
+      setError(true);
     } else {
       props.logIn(true);
       props.getUserUid(user.uid);
       navigate("/");  
+      setError(false);
     }
   }
+
   return (
-    <div className={styles.loginContainer}>
+    <form className={styles.loginContainer}>
       <div className={styles.logoContainer}>
         <h1>chatter</h1>
         <svg />
       </div>
       <p className={styles.loginLargeText}>Login</p>
-      <label>
+      <span style={{ display: `${error ? 'inline-block' : 'none'}` }}>Error logging in. Try again.</span>
+      <label className={error ? styles.error : null}>
         <svg className={styles.emailIcon} />
         <input
           onChange={(e) => setEmail(e.target.value)}
@@ -42,7 +47,7 @@ const Login = (props) => {
           type="text"
         />
       </label>
-      <label>
+      <label className={error ? styles.error : null}>
         <svg className={styles.passwordIcon} />
         <input
           onChange={(e) => setPassword(e.target.value)}
@@ -52,6 +57,7 @@ const Login = (props) => {
         />
       </label>
       <button
+        type="button"
         onClick={(event) => login(event)}
       >
         Login
@@ -68,7 +74,7 @@ const Login = (props) => {
       <p className={styles.loginSubtext}>
         Don't have an account yet? <Link to="/">Register</Link>
       </p>
-    </div>
+    </form>
   );
 };
 export default Login;

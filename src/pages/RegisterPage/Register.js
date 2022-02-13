@@ -13,7 +13,7 @@ import githubIcon from "../../assets/githubIcon.svg";
 const Register = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [uid, setUid] = useState(props.getUserUid);
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
 
   const register = async (event) => {
@@ -21,9 +21,11 @@ const Register = (props) => {
     let user = await registerWithEmailAndPassword(email, password);
     if(user instanceof Error) {
       console.log("error logging in");
+      setError(true);
     } else {
       props.register(true);
       props.getUserUid(user.uid);
+      setError(false);
       navigate("/");
     }
   };
@@ -41,7 +43,8 @@ const Register = (props) => {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore incididunt ut labore.
       </p>
-      <label>
+      <span style={{ display: `${error ? 'inline-block' : 'none'}` }}>Error logging in. Try again.</span>
+      <label className={error ? styles.error : null}>
         <svg className={styles.emailIcon} />
         <input
           onChange={(e) => setEmail(e.target.value)}
@@ -50,7 +53,7 @@ const Register = (props) => {
           type="text"
         />
       </label>
-      <label>
+      <label className={error ? styles.error : null}>
         <svg className={styles.passwordIcon} />
         <input
           onChange={(e) => setPassword(e.target.value)}

@@ -42,6 +42,12 @@
   padding: 8px 10px;
 }
 
+.loginContainer span {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
 label > input {
   border: none;
   font-size: 14px;
@@ -99,7 +105,11 @@ label > svg {
 
 .loginLargeText {
   font-size: 20px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+}
+
+.error {
+  border: solid 1px red !important;
 }
 
 @media screen and (min-width: 480px) {

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
-import { getUserInformation, updateUserProfile } from "../../firebase";
+import {
+  getUserInformation,
+  updateUserProfile,
+  updateProfilePicture,
+} from "../../firebase";
 
 const Profile = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,6 +13,7 @@ const Profile = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedName, setUpdatedName] = useState("");
   const [updatedDisplayName, setUpdatedDisplayName] = useState("");
+  const [updatedPhotoUrl, setUpdatedPhotoUrl] = useState("");
 
   useEffect(() => {
     getUserInformation(uid).then((res) => {
@@ -21,9 +26,18 @@ const Profile = (props) => {
     let updatedInfo = {
       name: updatedName,
       displayName: updatedDisplayName,
-      photoUrl: "",
+      photoUrl: updatedPhotoUrl,
     };
+    console.log(`Here is the url to the photo ${updatedPhotoUrl}`);
     setUser(await updateUserProfile(uid, updatedInfo));
+  };
+
+  const updateProfilePhoto = async (e) => {
+    e.preventDefault();
+    let file = document.getElementById("fileInput").files[0];
+    await updateProfilePicture(uid, file).then((url) => {
+      setUpdatedPhotoUrl(url);
+    });
   };
 
   //create reusable piece for two items below
@@ -31,7 +45,11 @@ const Profile = (props) => {
     <form className={styles.profileContent}>
       <div>
         <p>PHOTO</p>
-        <img alt="" />
+        <input
+          id="fileInput"
+          type="file"
+          onChange={(e) => updateProfilePhoto(e)}
+        />
       </div>
       <div>
         <p>NAME</p>
@@ -76,19 +94,19 @@ const Profile = (props) => {
 
   const nonEditableFields = (
     <div className={styles.profileContent}>
-      <div>
+      <div className={styles.infoSection}>
         <p>PHOTO</p>
-        <img />
+        <img src={user.photoUrl} />
       </div>
-      <div>
+      <div className={styles.infoSection}>
         <p>NAME</p>
         <p>{user.name}</p>
       </div>
-      <div>
+      <div className={styles.infoSection}>
         <p>USERNAME</p>
         <p>{user.displayName}</p>
       </div>
-      <div>
+      <div className={styles.infoSection}>
         <p>EMAIL</p>
         <p>{user.email}</p>
       </div>
