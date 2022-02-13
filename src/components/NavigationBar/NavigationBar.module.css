@@ -13,6 +13,10 @@
   justify-content: space-around;
 }
 
+.navIconsContainer > button:hover {
+  background-color: #efefef;
+}
+
 .slidingBarContainer {
   display: flex;
   justify-content: space-around;
@@ -44,7 +48,8 @@
   justify-content: center;
 }
 
-.navIconsContainer > img {
+.navIconsContainer img {
+  margin: 0;
   height: 30px;
   width: 30px;
   background-position: center;
@@ -63,7 +68,5 @@
 }
 
 @media screen and (min-width: 770px) {
-  .navIconsContainer > button:hover {
-    background-color: #efefef;
-  }
+  
 }

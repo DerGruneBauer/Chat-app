@@ -21,6 +21,7 @@ const Register = (props) => {
     event.preventDefault();
     registerWithEmailAndPassword(email, password);
     props.register(true);
+    props.getUserEmail(email);
     navigate("/");
   };
 

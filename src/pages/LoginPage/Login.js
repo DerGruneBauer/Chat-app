@@ -5,16 +5,7 @@ import SocialMediaButton from "../../components/SocialMediaButton/SocialMediaBut
 import {
   signInWithGoogle,
   logInWithEmailAndPassword,
-  sendPasswordReset,
 } from "../../firebase";
-// import {
-//   getFirestore,
-//   query,
-//   getDocs,
-//   collection,
-//   where,
-//   addDoc,
-// } from "firebase/firestore";
 import googleIcon from "../../assets/googleIcon.svg";
 import facebookIcon from "../../assets/facebookIcon.svg";
 import githubIcon from "../../assets/githubIcon.svg";
@@ -24,11 +15,17 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const login = (event) => {
+  const login = async (event) => {
     event.preventDefault();
-    logInWithEmailAndPassword(event, email, password)
-    props.logIn(true);
-    navigate("/");
+    let user = await logInWithEmailAndPassword(event, email, password);
+    if(user instanceof Error) {
+      console.log("error logging in");
+    } else {
+      props.logIn(true);
+      props.getUserUid(user.uid);
+      navigate("/");  
+    }
+
   }
   return (
     <div className={styles.loginContainer}>

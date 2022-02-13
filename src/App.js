@@ -15,6 +15,8 @@ import Bookmarks from "./pages/BookmarksPage/Bookmarks";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [uid, setUid] = useState();
+
   // useEffect(() => {
   //   ImageApi.testFetchCall()
   //     .then(res => res.json())
@@ -32,17 +34,21 @@ function App() {
     setShowSettingsModal(bool);
   }
 
+  const updateUid = (uid) => {
+    setUid(uid);
+  }
+
   const signInPages = (
     <Routes>
       <Route
         exact
         path="/"
-        element={<Register register={updateLoggedInStatus} />}
+        element={<Register getUserUid={updateUid} register={updateLoggedInStatus} />}
       />
       <Route
         exact
         path="/login"
-        element={<Login logIn={updateLoggedInStatus} />}
+        element={<Login getUserEUid={updateUid} logIn={updateLoggedInStatus} />}
       />
     </Routes>
   );
@@ -53,7 +59,7 @@ function App() {
       <UserSettings modalStatus={showSettingsModal}/>
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/profile" element={<Profile userUid={uid}/>} />
         <Route exact path="/explore" element={<Explore />} />
         <Route exact path="/bookmarks" element={<Bookmarks />} />
       </Routes>

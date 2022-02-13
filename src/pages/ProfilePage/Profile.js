@@ -1,36 +1,102 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
+import { getUserInformation, updateUserProfile } from "../../firebase";
 
-const Profile = () => {
-  return (
-    <div className={styles.profileContainer}>
+const Profile = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [uid, setUid] = useState(props.userUid);
+  const [user, setUser] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [updatedName, setUpdatedName] = useState("");
+  const [updatedDisplayName, setUpdatedDisplayName] = useState("");
+
+  useEffect(() => {
+    getUserInformation(user.uid).then((res) => {
+      setUser(res);
+      setIsLoading(false);
+    });
+  }, [user]);
+
+  const updateEditStatus = (bool) => {
+    setIsEditing(bool);
+  };
+
+  const updateUserInfo = () => {
+    let updatedInfo = {name: updatedName, displayName: updatedDisplayName, photoUrl: ""}
+    updateUserProfile(user.uid, updatedName);
+  };
+
+  const editableFields = (
+      <form className={styles.profileContent}>
+        <div>
+          <p>PHOTO</p>
+          <img alt="" />
+        </div>
+        <div>
+          <p>NAME</p>
+          <label htmlFor="name">
+            <input id="name" type="text" onChange={(e) => setUpdatedName(e.target.value)} defaultValue={user.name}></input>
+          </label>
+        </div>
+        <div>
+          <p>USERNAME</p>
+          <label htmlFor="username">
+            <input id="username" type="text" onChange={(e) => setUpdatedDisplayName(e.target.value)} defaultValue={user.displayName}></input>
+          </label>
+        </div>
+        <div>
+          <p>EMAIL</p>
+          <label htmlFor="email">
+            <input id="email" type="text" disabled value={user.email}></input>
+          </label>
+        </div>
+        <button
+          className={styles.saveButton}
+          onClick={() => {setIsEditing(false); updateUserInfo()}}
+        >
+          Save
+        </button>
+      </form>
+  );
+
+  const nonEditableFields = (
+    <div className={styles.profileContent}>
+      <div>
+        <p>PHOTO</p>
+        <img />
+      </div>
+      <div>
+        <p>NAME</p>
+        <p></p>
+      </div>
+      <div>
+        <p>USERNAME</p>
+        <p></p>
+      </div>
+      <div>
+        <p>EMAIL</p>
+        <p>{user.email}</p>
+      </div>
+    </div>
+  );
+  const profileInformation = (
+    <>
       <div className={styles.headerContainer}>
         <div className={styles.headerText}>
           <h1>Profile</h1>
-          <p>Some information may be visible to other people</p>
+          <span>Some information may be visible to other people</span>
         </div>
         <div className={styles.editButtonContainer}>
-          <button>Edit</button>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
         </div>
       </div>
-      <div className={styles.profileContent}>
-        <div>
-          <p className={styles.infoTitle}>PHOTO</p>
-          <img />
-        </div>
-        <div>
-          <p className={styles.infoTitle}>NAME</p>
-          <p className={styles.infoContent}>Remi Greenbauer</p>
-        </div>
-        <div>
-          <p className={styles.infoTitle}>BIO</p>
-          <p className={styles.infoContent}>I am a software developer. Lorem Ipsum I am a software developer. Lorem Ipsum </p>
-        </div>
-        <div>
-          <p className={styles.infoTitle}>EMAIL</p>
-          <p className={styles.infoContent}>remigreenbauer@gmail.com</p>
-        </div>
-      </div>
+      {isEditing ? editableFields : nonEditableFields}
+    </>
+  );
+
+  return (
+    <div className={styles.profileContainer}>
+      {isLoading ? "Loading" : profileInformation}
     </div>
   );
 };
