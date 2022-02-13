@@ -25,7 +25,6 @@ const Login = (props) => {
       props.getUserUid(user.uid);
       navigate("/");  
     }
-
   }
   return (
     <div className={styles.loginContainer}>

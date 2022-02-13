@@ -48,7 +48,7 @@ function App() {
       <Route
         exact
         path="/login"
-        element={<Login getUserEUid={updateUid} logIn={updateLoggedInStatus} />}
+        element={<Login getUserUid={updateUid} logIn={updateLoggedInStatus} />}
       />
     </Routes>
   );

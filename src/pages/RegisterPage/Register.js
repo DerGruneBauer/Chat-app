@@ -3,7 +3,6 @@ import styles from "./Register.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import SocialMediaButton from "../../components/SocialMediaButton/SocialMediaButton";
 import {
-  auth,
   signInWithGoogle,
   registerWithEmailAndPassword,
 } from "../../firebase";
@@ -14,15 +13,19 @@ import githubIcon from "../../assets/githubIcon.svg";
 const Register = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [uid, setUid] = useState(props.getUserUid);
   const navigate = useNavigate();
 
-  const register = (event) => {
+  const register = async (event) => {
     event.preventDefault();
-    registerWithEmailAndPassword(email, password);
-    props.register(true);
-    props.getUserEmail(email);
-    navigate("/");
+    let user = await registerWithEmailAndPassword(email, password);
+    if(user instanceof Error) {
+      console.log("error logging in");
+    } else {
+      props.register(true);
+      props.getUserUid(user.uid);
+      navigate("/");
+    }
   };
 
   return (

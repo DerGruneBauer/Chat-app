@@ -11,52 +11,67 @@ const Profile = (props) => {
   const [updatedDisplayName, setUpdatedDisplayName] = useState("");
 
   useEffect(() => {
-    getUserInformation(user.uid).then((res) => {
+    getUserInformation(uid).then((res) => {
       setUser(res);
       setIsLoading(false);
     });
   }, [user]);
 
-  const updateEditStatus = (bool) => {
-    setIsEditing(bool);
+  const updateUserInfo = async () => {
+    let updatedInfo = {
+      name: updatedName,
+      displayName: updatedDisplayName,
+      photoUrl: "",
+    };
+    setUser(await updateUserProfile(uid, updatedInfo));
   };
 
-  const updateUserInfo = () => {
-    let updatedInfo = {name: updatedName, displayName: updatedDisplayName, photoUrl: ""}
-    updateUserProfile(user.uid, updatedName);
-  };
-
+  //create reusable piece for two items below
   const editableFields = (
-      <form className={styles.profileContent}>
-        <div>
-          <p>PHOTO</p>
-          <img alt="" />
-        </div>
-        <div>
-          <p>NAME</p>
-          <label htmlFor="name">
-            <input id="name" type="text" onChange={(e) => setUpdatedName(e.target.value)} defaultValue={user.name}></input>
-          </label>
-        </div>
-        <div>
-          <p>USERNAME</p>
-          <label htmlFor="username">
-            <input id="username" type="text" onChange={(e) => setUpdatedDisplayName(e.target.value)} defaultValue={user.displayName}></input>
-          </label>
-        </div>
-        <div>
-          <p>EMAIL</p>
-          <label htmlFor="email">
-            <input id="email" type="text" disabled value={user.email}></input>
-          </label>
-        </div>
-        <button
-          className={styles.saveButton}
-          onClick={() => {setIsEditing(false); updateUserInfo()}}
-        >
-          Save
-        </button>
-      </form>
+    <form className={styles.profileContent}>
+      <div>
+        <p>PHOTO</p>
+        <img alt="" />
+      </div>
+      <div>
+        <p>NAME</p>
+        <label htmlFor="name">
+          <input
+            id="name"
+            type="text"
+            onChange={(e) => setUpdatedName(e.target.value)}
+            defaultValue={user.name}
+          ></input>
+        </label>
+      </div>
+      <div>
+        <p>USERNAME</p>
+        <label htmlFor="username">
+          <input
+            id="username"
+            type="text"
+            onChange={(e) => setUpdatedDisplayName(e.target.value)}
+            defaultValue={user.displayName}
+          ></input>
+        </label>
+      </div>
+      <div>
+        <p>EMAIL</p>
+        <label htmlFor="email">
+          <input id="email" type="text" disabled value={user.email}></input>
+        </label>
+      </div>
+      <button
+        className={styles.saveButton}
+        type="submit"
+        onClick={() => {
+          setIsEditing(false);
+          updateUserInfo();
+        }}
+      >
+        Save
+      </button>
+    </form>
   );
 
   const nonEditableFields = (
@@ -67,11 +82,11 @@ const Profile = (props) => {
       </div>
       <div>
         <p>NAME</p>
-        <p></p>
+        <p>{user.name}</p>
       </div>
       <div>
         <p>USERNAME</p>
-        <p></p>
+        <p>{user.displayName}</p>
       </div>
       <div>
         <p>EMAIL</p>
@@ -79,6 +94,7 @@ const Profile = (props) => {
       </div>
     </div>
   );
+
   const profileInformation = (
     <>
       <div className={styles.headerContainer}>
