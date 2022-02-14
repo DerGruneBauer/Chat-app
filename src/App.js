@@ -1,5 +1,4 @@
 import "./App.css";
-import ImageApi from "./ui-api/ImageApi";
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/LoginPage/Login";
@@ -55,8 +54,8 @@ function App() {
 
   const appPages = (
     <div className="appPagesContainer">
-      <Header updateModalDisplay={updateModalStatus} modalStatus={showSettingsModal} signOut={updateLoggedInStatus} />
-      <UserSettings modalStatus={showSettingsModal}/>
+      <Header updateModalDisplay={updateModalStatus} modalStatus={showSettingsModal} signOut={updateLoggedInStatus} userUid={uid} />
+      <UserSettings updateModalDisplay={updateModalStatus} modalStatus={showSettingsModal}/>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/profile" element={<Profile userUid={uid}/>} />

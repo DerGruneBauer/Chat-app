@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 //Add functionality so that when user clicks outside of modal
 //and modal is open it will shut automatically without needing to
 //click profile button again
+
+//make logout button functional+look into managing users with firebase
 const Modal = (props) => {
   const navigate = useNavigate();
 
@@ -15,19 +17,23 @@ const Modal = (props) => {
     navigate("/profile");
   };
 
+  const navigateLogout = () => {
+    navigate("/");
+  }
+
   return (
     <div
       style={{ display: `${props.modalStatus ? "inline-flex" : "none"}` }}
       className={styles.modalContainer}
     >
-      <button onClick={navigateToProfile}>
-        <img src={profileIcon} /> My Profile
+      <button onClick={() => {navigateToProfile(); props.updateModalDisplay(false);}}>
+        <img alt="profile icon" src={profileIcon} /> My Profile
       </button>
       <button
-        onClick={logout}
+        onClick={() => {logout(); navigateLogout();}}
         className={styles.signOut}
       >
-        <img src={logoutIcon} /> Logout
+        <img alt="logout icon" src={logoutIcon} /> Logout
       </button>
     </div>
   );

@@ -26,5 +26,14 @@
     margin-right: 15px;
     border: solid lightgray 1px;
     border-radius: 5px;
+}
+
+.defaultPicture {
     background-color: lightgray;
+}
+
+.profilePicture {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
