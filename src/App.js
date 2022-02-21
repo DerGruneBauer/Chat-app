@@ -12,7 +12,7 @@ import Explore from "./pages/ExplorePage/Explore";
 import Bookmarks from "./pages/BookmarksPage/Bookmarks";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [uid, setUid] = useState();
 

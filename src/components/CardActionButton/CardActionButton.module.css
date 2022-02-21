@@ -1,0 +1,29 @@
+.actionButtonContainer {
+    width: 20%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.actionButtonContainer:hover {
+    background-color: #EFEFEF;
+}
+
+.actionButtonContainer > img {
+    margin: 0;
+}
+
+.actionButtonContainer > img[data-color="blue"] {
+    filter: invert(28%) sepia(89%) saturate(1111%) hue-rotate(200deg)
+    brightness(103%) contrast(97%);
+}
+.actionButtonContainer > img[data-color="red"] {
+    filter: invert(14%) sepia(54%) saturate(6358%) hue-rotate(355deg) brightness(114%) contrast(125%);
+}
+.actionButtonContainer > img[data-color="green"] {
+    filter: invert(41%) sepia(88%) saturate(1094%) hue-rotate(87deg) brightness(107%) contrast(116%);
+}

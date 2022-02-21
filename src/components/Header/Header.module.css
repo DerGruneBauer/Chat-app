@@ -5,8 +5,7 @@
     display: flex;
     justify-content: space-between;
     background-color: white;
-    box-shadow: 0px 9px 16px 1px rgba(0,0,0,0.08);
-    border-bottom: 1px solid rgb(226, 226, 226);
+    border-bottom: .5px solid lightgray;
 }
 
 .headerContainer > svg {
@@ -20,7 +19,7 @@
     background-size: contain;
 }
 
-.headerContainer > img {
+.headerContainer > img, .headerContainer > div {
     height: 40px;
     width: 40px;
     margin-right: 15px;
@@ -30,6 +29,7 @@
 
 .defaultPicture {
     background-color: lightgray;
+
 }
 
 .profilePicture {
