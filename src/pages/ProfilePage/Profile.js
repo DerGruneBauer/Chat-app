@@ -1,136 +1,90 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Profile.module.css";
-import {
-  getUserInformation,
-  updateUserProfile,
-  updateProfilePicture,
-} from "../../firebase";
+import followIcon from "../../assets/followUser.svg";
+import PostCard from "../../components/PostCard/PostCard";
 
-const Profile = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [uid, setUid] = useState(props.userUid);
-  const [user, setUser] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
-  const [updatedName, setUpdatedName] = useState("");
-  const [updatedDisplayName, setUpdatedDisplayName] = useState("");
-  const [updatedPhotoUrl, setUpdatedPhotoUrl] = useState("");
+const Profile = () => {
+  const [savedItemsNav, setSavedItems] = useState([
+    { id: 0, isActive: true, name: "Tweets" },
+    { id: 1, isActive: false, name: "Tweets & Replies" },
+    { id: 2, isActive: false, name: "Media" },
+    { id: 3, isActive: false, name: "Likes" },
+  ]);
 
-  useEffect(() => {
-    getUserInformation(uid).then((res) => {
-      setUser(res);
-      setIsLoading(false);
+  const [slidingBar, setSlidingBar] = useState([
+    { id: 0, isActive: true },
+    { id: 1, isActive: false },
+    { id: 2, isActive: false },
+    { id: 3, isActive: false },
+  ]);
+
+  const updateSelectedItem = (id) => {
+    const updatedItems = savedItemsNav.map((item) => {
+      return item.id === id
+        ? { ...item, isActive: true }
+        : { ...item, isActive: false };
     });
-  }, [user]);
-
-  const updateUserInfo = async () => {
-    let updatedInfo = {
-      name: updatedName,
-      displayName: updatedDisplayName,
-      photoUrl: updatedPhotoUrl,
-    };
-    console.log(`Here is the url to the photo ${updatedPhotoUrl}`);
-    setUser(await updateUserProfile(uid, updatedInfo));
+    const updatedSlidingBar = slidingBar.map((bar) => {
+      return bar.id === id
+        ? { ...bar, isActive: true }
+        : { ...bar, isActive: false };
+    });
+    setSlidingBar(updatedSlidingBar);
+    setSavedItems(updatedItems);
   };
 
-  const updateProfilePhoto = async (e) => {
-    e.preventDefault();
-    let file = document.getElementById("fileInput").files[0];
-    await updateProfilePicture(uid, file).then((url) => {
-      setUpdatedPhotoUrl(url);
-    });
-  };
+  const mappedSavedItems = savedItemsNav.map((item) => (
+    <button
+      key={item.id}
+      id={item.id}
+      className={styles.savedItemButton}
+      onClick={() => {
+        updateSelectedItem(item.id);
+      }}
+      className={item.isActive ? styles.selectedItem : styles.unselectedItem}
+    >
+      {item.name}
+    </button>
+  ));
 
-  //create reusable piece for two items below
-  const editableFields = (
-    <form className={styles.profileContent}>
-      <div>
-        <p>PHOTO</p>
-        <input
-          id="fileInput"
-          type="file"
-          onChange={(e) => updateProfilePhoto(e)}
-        />
-      </div>
-      <div>
-        <p>NAME</p>
-        <label htmlFor="name">
-          <input
-            id="name"
-            type="text"
-            onChange={(e) => setUpdatedName(e.target.value)}
-            defaultValue={user.name}
-          ></input>
-        </label>
-      </div>
-      <div>
-        <p>USERNAME</p>
-        <label htmlFor="username">
-          <input
-            id="username"
-            type="text"
-            onChange={(e) => setUpdatedDisplayName(e.target.value)}
-            defaultValue={user.displayName}
-          ></input>
-        </label>
-      </div>
-      <div>
-        <p>EMAIL</p>
-        <label htmlFor="email">
-          <input id="email" type="text" disabled value={user.email}></input>
-        </label>
-      </div>
-      <button
-        className={styles.saveButton}
-        type="submit"
-        onClick={() => {
-          setIsEditing(false);
-          updateUserInfo();
-        }}
-      >
-        Save
-      </button>
-    </form>
-  );
-
-  const nonEditableFields = (
-    <div className={styles.profileContent}>
-      <div className={styles.infoSection}>
-        <p>PHOTO</p>
-        <img src={user.photoUrl} />
-      </div>
-      <div className={styles.infoSection}>
-        <p>NAME</p>
-        <p>{user.name}</p>
-      </div>
-      <div className={styles.infoSection}>
-        <p>USERNAME</p>
-        <p>{user.displayName}</p>
-      </div>
-      <div className={styles.infoSection}>
-        <p>EMAIL</p>
-        <p>{user.email}</p>
-      </div>
-    </div>
-  );
-
-  const profileInformation = (
-    <>
-      <div className={styles.headerContainer}>
-        <div className={styles.headerText}>
-          <h1>Profile</h1>
-          <span>Some information may be visible to other people</span>
-        </div>
-        <div className={styles.editButtonContainer}>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-        </div>
-      </div>
-      {isEditing ? editableFields : nonEditableFields}
-    </>
-  );
+  const mappedSlidingBar = slidingBar.map((bar) => (
+    <div
+      key={bar.id}
+      id={bar.id}
+      className={
+        bar.isActive ? styles.activeSlidingBar : styles.unactiveSlidingBar
+      }
+    ></div>
+  ));
 
   return (
     <div className={styles.profileContainer}>
-      {isLoading ? "Loading" : profileInformation}
+      <img className={styles.bannerImage} />
+      <img className={styles.userImage} />
+      <div className={styles.userInfo}>
+        <h2>Remi Greenbauer</h2>
+        <div className={styles.userStats}>
+          <span>
+            <b>2,567</b> Following
+          </span>
+          <span>
+            <b>10.8k</b> Followers
+          </span>
+        </div>
+        <p>Photographer and Filmaker based in Copenhagen, Denmark.</p>
+        <button className={styles.followUserButton}>
+          <img src={followIcon} alt="follow this user icon" />
+          Follow
+        </button>
+      </div>
+      <nav>
+        <div className={styles.slidingBarContainer}>{mappedSlidingBar}</div>
+        <div className={styles.navButtonContainer}>{mappedSavedItems}</div>
+      </nav>
+      <div className={styles.postSection}>
+        <PostCard />
+        <PostCard />
+      </div>
     </div>
   );
 };

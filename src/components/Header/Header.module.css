@@ -29,11 +29,14 @@
 
 .defaultPicture {
     background-color: lightgray;
-
 }
 
 .profilePicture {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+}
+
+.profilePicture:hover, .defaultPicture:hover {
+    cursor: pointer;
 }

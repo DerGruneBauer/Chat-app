@@ -15,7 +15,7 @@
     align-items: center;
 }
 
-.cardOwnerImage, .userImage {
+.cardOwnerInfo > img, .userReplySection > img {
     background-color: lightgray;
     border-radius: 4px;
     width: 40px;
@@ -28,17 +28,21 @@
     flex-direction: column;
 }
 
-.cardOwnerName {
+.cardData span:first-child {
     font-size: 18px;
     margin-bottom: 5px;
 }
 
-.cardPostedDate {
+.cardData span:last-child {
     font-size: 13px;
     color: rgb(155, 155, 155);
 }
 
-.cardImage {
+.postCardContainer > p {
+    font-size: 15px;
+}
+
+.postCardContainer > img  {
     background-color: lightgray;
     border-radius: 5px;
     height: 200px;

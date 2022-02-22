@@ -64,14 +64,14 @@ const PostCard = (props) => {
   return (
     <div className={styles.postCardContainer}>
       <div className={styles.cardOwnerInfo}>
-        <img className={styles.cardOwnerImage}></img>
+        <img></img>
         <div className={styles.cardData}>
-          <span className={styles.cardOwnerName}>Fake Name</span>
-          <span className={styles.cardPostedDate}>24 August at 20:43</span>
+          <span>Fake Name</span>
+          <span>24 August at 20:43</span>
         </div>
       </div>
       <p>Lorem ipsum Fake text goes here for a fake description on the card.</p>
-      <img className={styles.cardImage}></img>
+      <img></img>
       <div className={styles.cardDetails}>
         <span>100 Comments</span>
         <span>10 Retweets</span>
@@ -81,7 +81,7 @@ const PostCard = (props) => {
         {mappedActionBar}
       </div>
       <div className={styles.userReplySection}>
-        <img className={styles.userImage}></img>
+        <img></img>
         <input placeholder="Tweet your reply"></input>
       </div>
     </div>

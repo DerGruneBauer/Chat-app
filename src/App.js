@@ -10,17 +10,12 @@ import NavigationBar from "./components/NavigationBar/NavigationBar";
 import UserSettings from "./components/Modal/Modal";
 import Explore from "./pages/ExplorePage/Explore";
 import Bookmarks from "./pages/BookmarksPage/Bookmarks";
+import Settings from "./pages/SettingsPage/SettingsPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [uid, setUid] = useState();
-
-  // useEffect(() => {
-  //   ImageApi.testFetchCall()
-  //     .then(res => res.json())
-  //     .then(data => { console.log(data.express); setTestApiData(data.express); setIsLoading(false) });
-  // }, [])
 
   //may run into issue where user types URL into bar and receives login/register even through already logged in.
   //If logged in should redirect to homepage when trying to access register/login.
@@ -59,6 +54,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/profile" element={<Profile userUid={uid}/>} />
+        <Route exact path="/settings" element={<Settings userUid={uid}/>} />
         <Route exact path="/explore" element={<Explore />} />
         <Route exact path="/bookmarks" element={<Bookmarks />} />
       </Routes>

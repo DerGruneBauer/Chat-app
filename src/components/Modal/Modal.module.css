@@ -5,6 +5,7 @@
   background-color: white;
   border-radius: 10px;
   position: absolute;
+  z-index: 2;
   right: 10px;
   top: 70px;
   padding: 15px;
@@ -13,7 +14,7 @@
   justify-content: space-between;
 }
 
-.modalContainer > button {
+.modalContainer > button, .profileSettingContainer > button {
   background-color: transparent;
   border: none;
   display: flex;
@@ -21,20 +22,27 @@
   padding: 10px 55px 10px 10px;
   font-size: 15px;
   border-radius: 10px;
+  width: 100%;
 }
 
-.modalContainer > button:hover {
+.modalContainer > button:hover, .profileSettingContainer > button:hover {
   background-color: #EFEFEF;
+}
+
+.profileSettingContainer {
+  border-bottom: solid lightgray 1px;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 .signOut {
   color: red;
 }
 
-.signOut >img {
+.signOut > img {
   filter: invert(18%) sepia(70%) saturate(4947%) hue-rotate(339deg) brightness(79%) contrast(112%);
 }
 
-button > img {
+.profileSettingContainer > button > img, .signOut > img {
   margin-right: 10px;
 }
