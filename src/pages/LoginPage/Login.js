@@ -18,12 +18,11 @@ const Login = (props) => {
 
   const login = async (event) => {
     event.preventDefault();
-    let user = await logInWithEmailAndPassword(event, email, password);
+   let user = await logInWithEmailAndPassword(event, email, password);
     if(user instanceof Error) {
       console.log("error logging in");
       setError(true);
     } else {
-      props.logIn(true);
       props.getUserUid(user.uid);
       navigate("/");  
       setError(false);

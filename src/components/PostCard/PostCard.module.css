@@ -1,89 +1,100 @@
 .postCardContainer {
-    width: 85%;
-    padding: 15px;
-    border: none;
-    box-shadow: 0px 0px 25px 1px rgba(0,0,0,0.08);
-    border-radius: 10px;
-    background-color: white;
-    margin-bottom: 15px;
+  width: 85%;
+  padding: 15px;
+  border: none;
+  box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  background-color: white;
+  margin-bottom: 15px;
 }
 
+/* Name of User, poster's profile Image, Date of Post */
 .cardOwnerInfo {
-    width: 100%;
-    height: auto;
-    display: flex;
-    align-items: center;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
 }
 
-.cardOwnerInfo > img, .userReplySection > img {
-    background-color: lightgray;
-    border-radius: 4px;
-    width: 40px;
-    height: 40px;
-    margin-right: 15px;
+.cardOwnerInfo > img,
+.userReplySection > img {
+  background-color: lightgray;
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+}
+
+.cardOwnerInfo > img:hover,
+.userReplySection > img:hover,
+.cardData span:first-child:hover {
+  cursor: pointer;
 }
 
 .cardData {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardData span:first-child {
-    font-size: 18px;
-    margin-bottom: 5px;
+  font-size: 18px;
+  margin-bottom: 5px;
 }
 
 .cardData span:last-child {
-    font-size: 13px;
-    color: rgb(155, 155, 155);
+  font-size: 13px;
+  color: rgb(155, 155, 155);
 }
 
+/* Card Text, card image, card stats*/
 .postCardContainer > p {
-    font-size: 15px;
+  font-size: 15px;
 }
 
-.postCardContainer > img  {
-    background-color: lightgray;
-    border-radius: 5px;
-    height: 200px;
-    width: 100%;
+.postCardContainer > img {
+  background-color: lightgray;
+  border-radius: 5px;
+  height: 200px;
+  width: 100%;
 }
 
 .cardDetails {
-    display: flex;
-    justify-content: end;
-    margin: 10px 0;
+  display: flex;
+  justify-content: end;
+  margin: 10px 0;
 }
 
 .cardDetails > span {
-    color: rgb(155, 155, 155);
-    font-size: 13px;
-    margin-left: 15px;
+  color: rgb(155, 155, 155);
+  font-size: 13px;
+  margin-left: 15px;
 }
 
+/* Card action buttons, like, save etc */
 .cardActions {
-    display: flex;
-    justify-content: space-evenly;
-    border-top: lightgray solid 1px;
-    border-bottom: lightgray solid 1px;
-    padding: 8px 0;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  border-top: lightgray solid 1px;
+  border-bottom: lightgray solid 1px;
+  padding: 8px 0;
+  margin-bottom: 10px;
 }
 
+/* User Reply section and user image */
 .userReplySection {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .userReplySection > input {
-    flex-grow: 1;
-    border: solid lightgray .5px;
-    background-color: rgb(236, 236, 236);
-    border-radius: 5px;
-    padding-left: 15px;
-    font-size: 12px;
+  flex-grow: 1;
+  border: solid lightgray 0.5px;
+  background-color: rgb(236, 236, 236);
+  border-radius: 5px;
+  padding-left: 15px;
+  font-size: 12px;
 }
 
 .userReplySection > input::placeholder {
-    color: rgb(165, 165, 165);
+  color: rgb(165, 165, 165);
 }

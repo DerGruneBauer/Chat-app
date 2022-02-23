@@ -8,15 +8,8 @@ import {
 
 const Header = (props) => {
   
-  const [photoUrl, setPhotoUrl] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getUserInformation(props.userUid)
-    .then((res) => {
-      setPhotoUrl(res.photoUrl);
-    })
-  })
   const navigateToHome = () => {
     navigate("/");
   }
@@ -25,7 +18,7 @@ const Header = (props) => {
     props.updateModalDisplay(props.modalStatus ? false : true);
 
   const profilePicture = (
-    <img alt="your profile icon" className={styles.profilePicture} src={photoUrl} onClick={handleModal} />
+    <img alt="your profile icon" className={styles.profilePicture} src={props.user.photoUrl} onClick={handleModal} />
   )
 
   const defaultProfilePicture = (
@@ -35,7 +28,7 @@ const Header = (props) => {
   return (
     <nav className={styles.headerContainer}>
       <svg onClick={navigateToHome}></svg>
-      {photoUrl === "" ? defaultProfilePicture : profilePicture}
+      {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
     </nav>
   );
 };

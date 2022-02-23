@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import styles from "./Profile.module.css";
 import followIcon from "../../assets/followUser.svg";
 import PostCard from "../../components/PostCard/PostCard";
+import { userContext } from "../../userContext";
 
 const Profile = () => {
+  const [selectedUser, setSelectedUser] = useState({});
+
   const [savedItemsNav, setSavedItems] = useState([
     { id: 0, isActive: true, name: "Tweets" },
     { id: 1, isActive: false, name: "Tweets & Replies" },
@@ -57,34 +60,44 @@ const Profile = () => {
     ></div>
   ));
 
+  const loadedProfile = (
+    <userContext.Consumer>
+      {(user) => (
+        <>
+          <img />
+          <img src={user.photoUrl}/>
+          <div className={styles.userInfo}>
+            <h2>{user.name == "" ? "Edit name in settings" : user.name}</h2>
+            <div className={styles.userStats}>
+              <span>
+                <b>2,567</b> Following
+              </span>
+              <span>
+                <b>10.8k</b> Followers
+              </span>
+            </div>
+            <p>{user.bio == null ? "Edit user bio in settings." : user.bio}</p>
+            <button>
+              <img src={followIcon} alt="follow this user icon" />
+              Follow
+            </button>
+          </div>
+          <nav>
+            <div className={styles.slidingBarContainer}>{mappedSlidingBar}</div>
+            <div className={styles.navButtonContainer}>{mappedSavedItems}</div>
+          </nav>
+          <div className={styles.postSection}>
+            <PostCard />
+            <PostCard />
+          </div>
+        </>
+      )}
+    </userContext.Consumer>
+  );
+
   return (
     <div className={styles.profileContainer}>
-      <img className={styles.bannerImage} />
-      <img className={styles.userImage} />
-      <div className={styles.userInfo}>
-        <h2>Remi Greenbauer</h2>
-        <div className={styles.userStats}>
-          <span>
-            <b>2,567</b> Following
-          </span>
-          <span>
-            <b>10.8k</b> Followers
-          </span>
-        </div>
-        <p>Photographer and Filmaker based in Copenhagen, Denmark.</p>
-        <button className={styles.followUserButton}>
-          <img src={followIcon} alt="follow this user icon" />
-          Follow
-        </button>
-      </div>
-      <nav>
-        <div className={styles.slidingBarContainer}>{mappedSlidingBar}</div>
-        <div className={styles.navButtonContainer}>{mappedSavedItems}</div>
-      </nav>
-      <div className={styles.postSection}>
-        <PostCard />
-        <PostCard />
-      </div>
+      {loadedProfile}
     </div>
   );
 };

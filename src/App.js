@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/LoginPage/Login";
 import Register from "./pages/RegisterPage/Register";
@@ -11,11 +11,14 @@ import UserSettings from "./components/Modal/Modal";
 import Explore from "./pages/ExplorePage/Explore";
 import Bookmarks from "./pages/BookmarksPage/Bookmarks";
 import Settings from "./pages/SettingsPage/SettingsPage";
+import { userContext } from "./userContext";
+import { getUserInformation } from "./firebase";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [uid, setUid] = useState();
+  const [uid, setUid] = useState("");
+  const [loggedInUser, setLoggedInUser] = useState({});
 
   //may run into issue where user types URL into bar and receives login/register even through already logged in.
   //If logged in should redirect to homepage when trying to access register/login.
@@ -24,47 +27,75 @@ function App() {
     setIsLoggedIn(bool);
   };
 
+  const updateUsersInformation = (updatedUser) => {
+    setLoggedInUser(updatedUser);
+  }
+
   const updateModalStatus = (bool) => {
     setShowSettingsModal(bool);
-  }
+  };
 
   const updateUid = (uid) => {
     setUid(uid);
-  }
+  };
+
+  useEffect(() => {
+    if (uid != "") {
+      getUserInformation(uid).then((res) => {
+        setLoggedInUser(res);
+        setIsLoggedIn(true);
+      });
+    }
+  }, [uid]);
 
   const signInPages = (
     <Routes>
-      <Route
-        exact
-        path="/"
-        element={<Register getUserUid={updateUid} register={updateLoggedInStatus} />}
-      />
-      <Route
-        exact
-        path="/login"
-        element={<Login getUserUid={updateUid} logIn={updateLoggedInStatus} />}
-      />
+      <Route exact path="/" element={<Register getUserUid={updateUid} />} />
+      <Route exact path="/login" element={<Login getUserUid={updateUid} />} />
     </Routes>
   );
 
   const appPages = (
-    <div className="appPagesContainer">
-      <Header updateModalDisplay={updateModalStatus} modalStatus={showSettingsModal} signOut={updateLoggedInStatus} userUid={uid} />
-      <UserSettings updateModalDisplay={updateModalStatus} modalStatus={showSettingsModal}/>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/profile" element={<Profile userUid={uid}/>} />
-        <Route exact path="/settings" element={<Settings userUid={uid}/>} />
-        <Route exact path="/explore" element={<Explore />} />
-        <Route exact path="/bookmarks" element={<Bookmarks />} />
-      </Routes>
-      <NavigationBar />
-    </div>
+    <userContext.Consumer>
+      {(user) => (
+        <div className="appPagesContainer">
+          <Header
+            updateModalDisplay={updateModalStatus}
+            modalStatus={showSettingsModal}
+            signOut={updateLoggedInStatus}
+            user={user}
+          />
+          <UserSettings
+            updateModalDisplay={updateModalStatus}
+            modalStatus={showSettingsModal}
+            user={user}
+          />
+          <Routes>
+            <Route exact path="/" element={<Home user={user} />} />
+            <Route exact path="/profile" element={<Profile user={user} />} />
+            <Route
+              exact
+              path="/settings"
+              element={<Settings updateUser={updateUsersInformation} user={user} />}
+            />
+            <Route exact path="/explore" element={<Explore user={user} />} />
+            <Route
+              exact
+              path="/bookmarks"
+              element={<Bookmarks user={user} />}
+            />
+          </Routes>
+          <NavigationBar />
+        </div>
+      )}
+    </userContext.Consumer>
   );
 
   return (
     <div className="app">
-      <BrowserRouter>{isLoggedIn ? appPages : signInPages}</BrowserRouter>
+      <userContext.Provider value={loggedInUser}>
+        <BrowserRouter>{isLoggedIn ? appPages : signInPages}</BrowserRouter>
+      </userContext.Provider>
     </div>
   );
 }

@@ -23,7 +23,6 @@ const Register = (props) => {
       console.log("error logging in");
       setError(true);
     } else {
-      props.register(true);
       props.getUserUid(user.uid);
       setError(false);
       navigate("/");
