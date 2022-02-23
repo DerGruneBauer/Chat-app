@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./SettingsPage.module.css";
 import { updateUserProfile, updateProfilePicture } from "../../firebase";
-import { userContext } from "../../userContext";
 import fileUpload from "../../assets/fileUpload.svg";
 
 const Settings = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [updatedName, setUpdatedName] = useState("");
-  const [updatedDisplayName, setUpdatedDisplayName] = useState("");
+  const [updatedName, setUpdatedName] = useState(props.user.name);
+  const [updatedDisplayName, setUpdatedDisplayName] = useState(props.user.displayName);
   const [updatedPhotoUrl, setUpdatedPhotoUrl] = useState(props.user.photoUrl);
-  const [updatedBio, setUpdatedBio] = useState("");
+  const [updatedBio, setUpdatedBio] = useState(props.user.bio);
   const [fileName, setFileName] = useState("");
 
   const updateUserInfo = async () => {
@@ -27,7 +26,7 @@ const Settings = (props) => {
     e.preventDefault();
     let file = document.getElementById("fileInput").files[0];
     setFileName(file.name);
-    if (file == null) {
+    if (file === null) {
       file = props.user.photoUrl;
     } else {
       await updateProfilePicture(props.user.uid, file).then((url) => {
@@ -38,13 +37,11 @@ const Settings = (props) => {
 
   //create reusable piece for two items below
   const editableFields = (
-    <userContext.Consumer>
-      {(user) => (
         <form className={styles.settingsContent}>
           <div>
             <p>PHOTO</p>
             <label htmlFor="fileInput">
-              <img alt="upload file icon" src={fileUpload}/>{fileName == "" ? "Upload an image..." : fileName}
+              <img alt="upload file icon" src={fileUpload}/>{fileName === "" ? "Upload an image..." : fileName}
               <input
                 id="fileInput"
                 type="file"
@@ -59,7 +56,7 @@ const Settings = (props) => {
                 id="name"
                 type="text"
                 onChange={(e) => setUpdatedName(e.target.value)}
-                defaultValue={user.name}
+                defaultValue={props.user.name}
               ></input>
             </label>
           </div>
@@ -70,7 +67,7 @@ const Settings = (props) => {
                 id="username"
                 type="text"
                 onChange={(e) => setUpdatedDisplayName(e.target.value)}
-                defaultValue={user.displayName}
+                defaultValue={props.user.displayName}
               ></input>
             </label>
           </div>
@@ -81,14 +78,14 @@ const Settings = (props) => {
                 id="bio"
                 type="text"
                 onChange={(e) => setUpdatedBio(e.target.value)}
-                defaultValue={user.bio}
+                defaultValue={props.user.bio}
               ></input>
             </label>
           </div>
           <div>
             <p>EMAIL</p>
             <label htmlFor="email">
-              <input id="email" type="text" disabled value={user.email}></input>
+              <input id="email" type="text" disabled value={props.user.email}></input>
             </label>
           </div>
           <button
@@ -102,37 +99,41 @@ const Settings = (props) => {
             Save
           </button>
         </form>
-      )}
-    </userContext.Consumer>
   );
 
+  const profilePicture = (
+    <img
+      alt="your profile icon"
+      className={styles.profilePicture}
+      src={props.user.photoUrl}
+    />
+  );
+
+  const defaultProfilePicture = <div className={styles.defaultPicture} />;
+
   const nonEditableFields = (
-    <userContext.Consumer>
-      {(user) => (
         <div className={styles.settingsContent}>
           <div className={styles.infoSection}>
             <p>PHOTO</p>
-            <img src={user.photoUrl} />
+            {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
           </div>
           <div className={styles.infoSection}>
             <p>NAME</p>
-            <p>{user.name}</p>
+            <p>{props.user.name}</p>
           </div>
           <div className={styles.infoSection}>
             <p>USERNAME</p>
-            <p>{user.displayName}</p>
+            <p>{props.user.displayName}</p>
           </div>
           <div className={styles.infoSection}>
             <p>BIO</p>
-            <p>{user.bio}</p>
+            <p>{props.user.bio}</p>
           </div>
           <div className={styles.infoSection}>
             <p>EMAIL</p>
-            <p>{user.email}</p>
+            <p>{props.user.email}</p>
           </div>
         </div>
-      )}
-    </userContext.Consumer>
   );
 
   const settingsInformation = (

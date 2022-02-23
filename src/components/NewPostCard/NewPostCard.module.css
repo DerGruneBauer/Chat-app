@@ -22,7 +22,7 @@
   display: flex;
 }
 
-.postTextContainer > img {
+.postTextContainer > img, .postTextContainer > div {
   width: 40px;
   height: 40px;
   background-color: lightgray;

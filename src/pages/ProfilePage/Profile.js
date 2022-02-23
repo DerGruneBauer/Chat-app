@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import styles from "./Profile.module.css";
 import followIcon from "../../assets/followUser.svg";
 import PostCard from "../../components/PostCard/PostCard";
-import { userContext } from "../../userContext";
 
-const Profile = () => {
+const Profile = (props) => {
   const [selectedUser, setSelectedUser] = useState({});
 
   const [savedItemsNav, setSavedItems] = useState([
@@ -60,14 +59,22 @@ const Profile = () => {
     ></div>
   ));
 
+  const profilePicture = (
+    <img
+      alt="your profile icon"
+      className={styles.profilePicture}
+      src={props.user.photoUrl}
+    />
+  );
+
+  const defaultProfilePicture = <div className={styles.defaultPicture} />;
+
   const loadedProfile = (
-    <userContext.Consumer>
-      {(user) => (
         <>
           <img />
-          <img src={user.photoUrl}/>
+          {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
           <div className={styles.userInfo}>
-            <h2>{user.name == "" ? "Edit name in settings" : user.name}</h2>
+            <h2>{props.user.name == "" ? "Edit name in settings" : props.user.name}</h2>
             <div className={styles.userStats}>
               <span>
                 <b>2,567</b> Following
@@ -76,7 +83,7 @@ const Profile = () => {
                 <b>10.8k</b> Followers
               </span>
             </div>
-            <p>{user.bio == null ? "Edit user bio in settings." : user.bio}</p>
+            <p>{props.user.bio == "" ? "Edit user bio in settings." : props.user.bio}</p>
             <button>
               <img src={followIcon} alt="follow this user icon" />
               Follow
@@ -87,18 +94,12 @@ const Profile = () => {
             <div className={styles.navButtonContainer}>{mappedSavedItems}</div>
           </nav>
           <div className={styles.postSection}>
-            <PostCard />
-            <PostCard />
+            <PostCard user={props.user}/>
+            <PostCard user={props.user}/>
           </div>
         </>
-      )}
-    </userContext.Consumer>
   );
 
-  return (
-    <div className={styles.profileContainer}>
-      {loadedProfile}
-    </div>
-  );
+  return <div className={styles.profileContainer}>{loadedProfile}</div>;
 };
 export default Profile;

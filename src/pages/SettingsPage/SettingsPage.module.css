@@ -55,13 +55,17 @@
   flex-direction: column;
 }
 
-.settingsContent img {
+.settingsContent img, .defaultPicture {
   height: 50px;
   width: 50px;
   border-radius: 5px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+
+.defaultPicture {
+  background-color: lightgray;
 }
 
 .settingsContent > div {
@@ -86,19 +90,6 @@
 
 .settingsContent label {
   width: 70%;
-}
-
-.infoSection p:first-child {
-  color: gray;
-  font-size: 14px;
-}
-
-.infoSection p:last-child {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 70%;
-  text-align: end;
 }
 
 .saveButton {
@@ -137,4 +128,17 @@
 
 .settingsContent > div:first-child > label:hover {
   cursor: pointer;
+}
+
+.infoSection p:first-child {
+  color: gray;
+  font-size: 14px;
+}
+
+.infoSection p:last-child {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 70%;
+  text-align: end;
 }

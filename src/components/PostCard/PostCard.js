@@ -9,15 +9,6 @@ import heartIcon from "../../assets/heartOutline.svg";
 import bookmarkIcon from "../../assets/bookmarkBorder.svg";
 
 const PostCard = (props) => {
-  const [photoUrl, setPhotoUrl] = useState("");
-  const navigate = useNavigate();
-
-  //   useEffect(() => {
-  //     getUserInformation(props.userUid)
-  //     .then((res) => {
-  //       setPhotoUrl(res.photoUrl);
-  //     })
-  //   })
 
   const [cardActionButtons, setCardActionButtons] = useState([
     {
@@ -81,7 +72,7 @@ const PostCard = (props) => {
         {mappedActionBar}
       </div>
       <div className={styles.userReplySection}>
-        <img></img>
+        {props.user.photoUrl=="" ? <img/> : <img src={props.user.photoUrl}/>}
         <input placeholder="Tweet your reply"></input>
       </div>
     </div>

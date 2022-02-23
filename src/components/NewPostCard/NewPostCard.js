@@ -4,27 +4,37 @@ import imageIcon from "../../assets/imageIcon.svg";
 import globeIcon from "../../assets/globeIcon.svg";
 
 const NewPostCard = (props) => {
+  
+  const profilePicture = (
+    <img
+      alt="your profile icon"
+      className={styles.profilePicture}
+      src={props.user.photoUrl}
+    />
+  );
+
+  const defaultProfilePicture = <div className={styles.defaultPicture} />;
 
   return (
-        <div className={styles.newPostContainer}>
-          <h4>Tweet Something</h4>
-          <div className={styles.postTextContainer}>
-            <img src={props.user.photoUrl}></img>
-            <input placeholder="What's happening?"></input>
-          </div>
-          <div className={styles.postOptions}>
-            <div>
-              <button>
-                <img src={imageIcon}></img>
-              </button>
-              <button>
-                <img className={styles.globeIcon} src={globeIcon}></img>Everyone
-                can reply
-              </button>
-            </div>
-            <button>Tweet</button>
-          </div>
+    <div className={styles.newPostContainer}>
+      <h4>Tweet Something</h4>
+      <div className={styles.postTextContainer}>
+        {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
+        <input placeholder="What's happening?"></input>
+      </div>
+      <div className={styles.postOptions}>
+        <div>
+          <button>
+            <img src={imageIcon}></img>
+          </button>
+          <button>
+            <img className={styles.globeIcon} src={globeIcon}></img>Everyone can
+            reply
+          </button>
         </div>
+        <button>Tweet</button>
+      </div>
+    </div>
   );
 };
 
