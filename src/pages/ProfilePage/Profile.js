@@ -5,7 +5,6 @@ import PostCard from "../../components/PostCard/PostCard";
 import { getUserPosts } from "../../firebase";
 
 const Profile = (props) => {
-  const [selectedUser, setSelectedUser] = useState({});
   const [selectedPosts, setSelectedPosts] = useState([]);
 
   const [savedItemsNav, setSavedItems] = useState([
@@ -80,15 +79,23 @@ const Profile = (props) => {
       console.log(`Showing tweets`);
       let posts = await getUserPosts(props.user.uid);
       setSelectedPosts(posts);
-      console.log(selectedPosts);
     } else if (savedItemsNav[1].isActive) {
+      setSelectedPosts([]);
       console.log("showing tweets and replies");
     } else if (savedItemsNav[2].isActive) {
+      setSelectedPosts([]);
       console.log("showing media");
     } else {
+      setSelectedPosts([]);
       console.log("showing likes");
     }
   };
+
+  const getDate = (seconds) => {
+      var time = new Date(1970, 0, 1); 
+      time.setSeconds(seconds);
+      return time.toDateString();
+  }
 
   const mappedPosts = selectedPosts.map((post) => (
     <PostCard
@@ -98,7 +105,8 @@ const Profile = (props) => {
       comments={post.comments}
       saves={post.saves}
       retweets={post.retweets}
-      date={post.datePosted}
+      photoUrl={post.photoUrl}
+      date={getDate(post.datePosted.seconds)}
     />
   ));
 
@@ -132,8 +140,6 @@ const Profile = (props) => {
       </nav>
       <div className={styles.postSection}>
         {mappedPosts}
-        {/* <PostCard user={props.user}/>
-            <PostCard user={props.user}/> */}
       </div>
     </>
   );

@@ -52,7 +52,6 @@ const PostCard = (props) => {
   )
   );
 
-  // const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   return (
     <div className={styles.postCardContainer}>
       <div className={styles.cardOwnerInfo}>
@@ -63,7 +62,7 @@ const PostCard = (props) => {
         </div>
       </div>
       <p>{props.postText}</p>
-      {1+1 == "" ? null : <img />}
+      {props.photoUrl == "" ? null : <img />}
       <div className={styles.cardDetails}>
         <span>{props.comments} Comments</span>
         <span>{props.retweets} Retweets</span>
