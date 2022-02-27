@@ -52,21 +52,22 @@ const PostCard = (props) => {
   )
   );
 
+  // const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   return (
     <div className={styles.postCardContainer}>
       <div className={styles.cardOwnerInfo}>
         <img></img>
         <div className={styles.cardData}>
-          <span>Fake Name</span>
-          <span>24 August at 20:43</span>
+          <span>{props.userName}</span>
+          <span>{props.date}</span>
         </div>
       </div>
-      <p>Lorem ipsum Fake text goes here for a fake description on the card.</p>
-      <img></img>
+      <p>{props.postText}</p>
+      {1+1 == "" ? null : <img />}
       <div className={styles.cardDetails}>
-        <span>100 Comments</span>
-        <span>10 Retweets</span>
-        <span>234 Saved</span>
+        <span>{props.comments} Comments</span>
+        <span>{props.retweets} Retweets</span>
+        <span>{props.saves} Saved</span>
       </div>
       <div className={styles.cardActions}>
         {mappedActionBar}

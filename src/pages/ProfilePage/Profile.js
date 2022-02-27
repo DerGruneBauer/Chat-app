@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Profile.module.css";
 import followIcon from "../../assets/followUser.svg";
 import PostCard from "../../components/PostCard/PostCard";
+import { getUserPosts } from "../../firebase";
 
 const Profile = (props) => {
   const [selectedUser, setSelectedUser] = useState({});
+  const [selectedPosts, setSelectedPosts] = useState([]);
 
   const [savedItemsNav, setSavedItems] = useState([
     { id: 0, isActive: true, name: "Tweets" },
@@ -59,6 +61,10 @@ const Profile = (props) => {
     ></div>
   ));
 
+  useEffect(() => {
+    getUserTweets();
+  }, [savedItemsNav]);
+
   const profilePicture = (
     <img
       alt="your profile icon"
@@ -69,35 +75,67 @@ const Profile = (props) => {
 
   const defaultProfilePicture = <div className={styles.defaultPicture} />;
 
+  const getUserTweets = async () => {
+    if (savedItemsNav[0].isActive) {
+      console.log(`Showing tweets`);
+      let posts = await getUserPosts(props.user.uid);
+      setSelectedPosts(posts);
+      console.log(selectedPosts);
+    } else if (savedItemsNav[1].isActive) {
+      console.log("showing tweets and replies");
+    } else if (savedItemsNav[2].isActive) {
+      console.log("showing media");
+    } else {
+      console.log("showing likes");
+    }
+  };
+
+  const mappedPosts = selectedPosts.map((post) => (
+    <PostCard
+      user={props.user}
+      userName={post.userName}
+      postText={post.postText}
+      comments={post.comments}
+      saves={post.saves}
+      retweets={post.retweets}
+      date={post.datePosted}
+    />
+  ));
+
   const loadedProfile = (
-        <>
-          <img />
-          {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
-          <div className={styles.userInfo}>
-            <h2>{props.user.name == "" ? "Edit name in settings" : props.user.name}</h2>
-            <div className={styles.userStats}>
-              <span>
-                <b>2,567</b> Following
-              </span>
-              <span>
-                <b>10.8k</b> Followers
-              </span>
-            </div>
-            <p>{props.user.bio == "" ? "Edit user bio in settings." : props.user.bio}</p>
-            <button>
-              <img src={followIcon} alt="follow this user icon" />
-              Follow
-            </button>
-          </div>
-          <nav>
-            <div className={styles.slidingBarContainer}>{mappedSlidingBar}</div>
-            <div className={styles.navButtonContainer}>{mappedSavedItems}</div>
-          </nav>
-          <div className={styles.postSection}>
-            <PostCard user={props.user}/>
-            <PostCard user={props.user}/>
-          </div>
-        </>
+    <>
+      <img />
+      {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
+      <div className={styles.userInfo}>
+        <h2>
+          {props.user.name == "" ? "Edit name in settings" : props.user.name}
+        </h2>
+        <div className={styles.userStats}>
+          <span>
+            <b>2,567</b> Following
+          </span>
+          <span>
+            <b>10.8k</b> Followers
+          </span>
+        </div>
+        <p>
+          {props.user.bio == "" ? "Edit user bio in settings." : props.user.bio}
+        </p>
+        <button>
+          <img src={followIcon} alt="follow this user icon" />
+          Follow
+        </button>
+      </div>
+      <nav>
+        <div className={styles.slidingBarContainer}>{mappedSlidingBar}</div>
+        <div className={styles.navButtonContainer}>{mappedSavedItems}</div>
+      </nav>
+      <div className={styles.postSection}>
+        {mappedPosts}
+        {/* <PostCard user={props.user}/>
+            <PostCard user={props.user}/> */}
+      </div>
+    </>
   );
 
   return <div className={styles.profileContainer}>{loadedProfile}</div>;
