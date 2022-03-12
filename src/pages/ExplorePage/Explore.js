@@ -1,10 +1,17 @@
 import React from "react";
 import styles from "./Explore.module.css";
-import { Link } from "react-router-dom";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import SideBarNav from "../../components/SideBarNav/SideBarNav";
 
 const Explore = () => {
+
+  const sideBarNav = ["Top", "Latest", "People", "Media"];
+
   return (
-    <h1>Explore page</h1>
+    <div className={styles.exploreContainer}>
+      <SearchBar />
+      <SideBarNav sideBarNav={sideBarNav}/>
+    </div>
   );
 };
 

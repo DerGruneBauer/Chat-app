@@ -2,19 +2,14 @@ import React from "react";
 import styles from "./Home.module.css";
 import PostCard from "../../components/PostCard/PostCard";
 import NewPostCard from "../../components/NewPostCard/NewPostCard";
-import { userContext } from "../../userContext";
 
-const Home = () => {
+const Home = (props) => {
   return (
-    <userContext.Consumer>
-      {(value) => (
         <div className={styles.homeContainer}>
-          <NewPostCard user={value} />
-          <PostCard user={value} />
-          <PostCard user={value} />
+          <NewPostCard user={props.user} />
+          <PostCard user={props.user} />
+          <PostCard user={props.user} />
         </div>
-      )}
-    </userContext.Consumer>
   );
 };
 export default Home;

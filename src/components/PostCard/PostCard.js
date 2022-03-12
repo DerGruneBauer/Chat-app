@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./PostCard.module.css";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
 import CardActionButton from "../CardActionButton/CardActionButton";
 import retweetIcon from "../../assets/retweet.svg";
