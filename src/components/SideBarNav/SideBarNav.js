@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./SideBarNav.module.css";
 
 const SideBarNav = (props) => {
@@ -36,12 +36,11 @@ const SideBarNav = (props) => {
     <button
       key={item.id}
       id={item.id}
-      className={styles.savedItemButton}
       onClick={(e) => {
         updateSelectedItem(item.id);
         props.updateShownItems(e);
       }}
-      className={item.isActive ? styles.selectedItem : styles.unselectedItem}
+      className={styles.savedItemButton, item.isActive ? styles.selectedItem : styles.unselectedItem}
     >
       {item.name}
     </button>

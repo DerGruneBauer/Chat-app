@@ -6,7 +6,6 @@ import { getUserPosts } from "../../firebase";
 import SideBarNav from "../../components/SideBarNav/SideBarNav";
 
 const Profile = (props) => {
-
   const [selectedPosts, setSelectedPosts] = useState([]);
 
   const [selectedNavItem, setSelectedNavItem] = useState("Tweets");
@@ -15,7 +14,7 @@ const Profile = (props) => {
 
   const updateShownItems = (e) => {
     setSelectedNavItem(e.target.innerText);
-  }
+  };
 
   useEffect(() => {
     getUserTweets();
@@ -32,14 +31,13 @@ const Profile = (props) => {
   const defaultProfilePicture = <div className={styles.defaultPicture} />;
 
   const getUserTweets = async () => {
-    if (selectedNavItem == "Tweets") {
-      console.log(`Showing tweets`);
+    if (selectedNavItem === "Tweets") {
       let posts = await getUserPosts(props.user.uid);
       setSelectedPosts(posts);
-    } else if (selectedNavItem == "Tweets & Replies") {
+    } else if (selectedNavItem === "Tweets & Replies") {
       setSelectedPosts([]);
       console.log("showing tweets and replies");
-    } else if (selectedNavItem == "Media") {
+    } else if (selectedNavItem === "Media") {
       setSelectedPosts([]);
       console.log("showing media");
     } else {
@@ -68,13 +66,15 @@ const Profile = (props) => {
     />
   ));
 
+  const defaultBackgroundImage = <div className={styles.defaultBackgroundImage} />
+
   const loadedProfile = (
     <>
-      <img />
+      { 1+1 === 2 ? defaultBackgroundImage : <img alt="The user's selected background." className={styles.backgroundImage} />}
       {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
       <div className={styles.userInfo}>
         <h2>
-          {props.user.name == "" ? "Edit name in settings" : props.user.name}
+          {props.user.name === "" ? "Edit name in settings" : props.user.name}
         </h2>
         <div className={styles.userStats}>
           <span>
@@ -85,18 +85,16 @@ const Profile = (props) => {
           </span>
         </div>
         <p>
-          {props.user.bio == "" ? "Edit user bio in settings." : props.user.bio}
+          {props.user.bio === ""
+            ? "Edit user bio in settings."
+            : props.user.bio}
         </p>
         <button>
           <img src={followIcon} alt="Click to follow this user." />
           Follow
         </button>
       </div>
-      {/* <nav>
-        <div className={styles.slidingBarContainer}>{mappedSlidingBar}</div>
-        <div className={styles.navButtonContainer}>{mappedSavedItems}</div>
-      </nav> */}
-      <SideBarNav sideBarNav={sideBarNav} updateShownItems={updateShownItems}/>
+      <SideBarNav sideBarNav={sideBarNav} updateShownItems={updateShownItems} />
       <div className={styles.postSection}>{mappedPosts}</div>
     </>
   );
