@@ -1,0 +1,14 @@
+.bookmarkContainer {
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  padding-top: 15px;
+}
+
+.postSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}

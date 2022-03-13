@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Explore.module.css";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBarNav from "../../components/SideBarNav/SideBarNav";
 import PostCard from "../../components/PostCard/PostCard";
+import { searchAllPosts } from "../../firebase";
 
 const Explore = (props) => {
+  const [hasSearched, setHasSearched] = useState(false);
   const [selectedPosts, setSelectedPosts] = useState([]);
-
+  const [searchedItem, setSearchedItem] = useState("");
   const [selectedNavItem, setSelectedNavItem] = useState("Top");
 
   const sideBarNav = ["Top", "Latest", "People", "Media"];
@@ -15,9 +17,25 @@ const Explore = (props) => {
     setSelectedNavItem(e.target.innerText);
   };
 
+  const updateSearchedItem = (e, searchBarText) => {
+    e.preventDefault();
+    setSearchedItem(searchBarText);
+  }
+
+  useEffect(() => {
+    showPosts();
+  }, [searchedItem]);
+
+
+  const showPosts = async () => {
+    console.log("starting process");
+    let posts = await searchAllPosts("Remi");
+    console.log(posts);
+  }
+
   return (
     <div className={styles.exploreContainer}>
-      <SearchBar />
+      <SearchBar searchItem={updateSearchedItem} />
       <SideBarNav updateShownItems={updateShownItems} sideBarNav={sideBarNav}/>
       <div className={styles.postSection}>
         <PostCard user={props.user} />
