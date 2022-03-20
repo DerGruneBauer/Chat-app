@@ -3,6 +3,8 @@ import styles from "./NewPostCard.module.css";
 import imageIcon from "../../assets/imageIcon.svg";
 import globeIcon from "../../assets/globeIcon.svg";
 import { addNewPost } from "../../firebase";
+import PostApi from "../../api/PostsApi";
+import UserApi from "../../api/UserApi";
 
 const NewPostCard = (props) => {
   const [photoUrl, setPhotoUrl] = useState("");
@@ -10,6 +12,7 @@ const NewPostCard = (props) => {
 
   //can we condense the below?
   const formatDate = async (currentDate) => {
+    //year-month-day '1996-12-02'
     let month =
       currentDate.getUTCMonth().toString().length === 1
         ? `0${currentDate.getUTCMonth().toString()}`
@@ -39,17 +42,32 @@ const NewPostCard = (props) => {
 
   const submitNewPost = async () => {
     const date = new Date();
+    console.log(props.user.uid);
+    // let newPostInfo = {
+    //   userName: props.user.name,
+    //   // datePosted: date,
+    //   postText: postText,
+    //   photoUrl: photoUrl,
+    //   // formattedDate: await formatDate(date),
+    //   // formattedTime: await formatTime(date),
+    // };
+    let userId = await UserApi.getUserById(props.user.uid);
+    console.log(userId);
+    // let newPostInfo = {
+    //   post_text: postText, 
+    //   visible_to_all: true, 
+    //   date_posted: await formatDate(date),
+    //   time_posted: await formatTime(date),
+    //   user_id: userId, 
+    //   comments: [], 
+    //   retweets: [], 
+    //   saves: [], 
+    //   likes: [],
+    //   photo_url: photoUrl
+    // }
 
-    let newPostInfo = {
-      userName: props.user.name,
-      datePosted: date,
-      postText: postText,
-      photoUrl: photoUrl,
-      formattedDate: await formatDate(date),
-      formattedTime: await formatTime(date),
-    };
-
-    addNewPost(props.user.uid, newPostInfo);
+    // await PostApi.createNewPost(newPostInfo);
+    // addNewPost(props.user.uid, newPostInfo);
   };
 
   const profilePicture = (
