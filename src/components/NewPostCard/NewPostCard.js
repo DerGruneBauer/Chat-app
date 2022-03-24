@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./NewPostCard.module.css";
 import imageIcon from "../../assets/imageIcon.svg";
 import globeIcon from "../../assets/globeIcon.svg";
-import { addNewPost } from "../../firebase";
 import PostApi from "../../api/PostsApi";
 import UserApi from "../../api/UserApi";
 
@@ -10,64 +9,36 @@ const NewPostCard = (props) => {
   const [photoUrl, setPhotoUrl] = useState("");
   const [postText, setPostText] = useState("");
 
-  //can we condense the below?
   const formatDate = async (currentDate) => {
-    //year-month-day '1996-12-02'
-    let month =
-      currentDate.getUTCMonth().toString().length === 1
-        ? `0${currentDate.getUTCMonth().toString()}`
-        : currentDate.getUTCMonth().toString();
-    let date =
-      currentDate.getUTCDate().toString().length === 1
-        ? `0${currentDate.getUTCDate().toString()}`
-        : currentDate.getUTCDate().toString();
-    return `${month}${date}${currentDate.getUTCFullYear().toString()}`;
+    return `${currentDate.getUTCFullYear()}-${currentDate.getUTCMonth()}-${currentDate.getUTCDay()}`;
   };
 
   const formatTime = async (currentTime) => {
-    let hour =
-      currentTime.getUTCHours().toString().length === 1
-        ? `0${currentTime.getUTCHours().toString()}`
-        : currentTime.getUTCHours().toString();
-    let minute =
-      currentTime.getUTCMinutes().toString().length === 1
-        ? `0${currentTime.getUTCMinutes().toString()}`
-        : currentTime.getUTCMinutes().toString();
-    let seconds =
-      currentTime.getUTCSeconds().toString().length === 1
-        ? `0${currentTime.getUTCSeconds().toString()}`
-        : currentTime.getUTCSeconds().toString();
-    return `${hour}${minute}${seconds}`;
+    return `${currentTime.getUTCHours()}:${currentTime.getUTCMinutes()}:${currentTime.getUTCSeconds()}`;
   };
 
   const submitNewPost = async () => {
     const date = new Date();
-    console.log(props.user.uid);
-    // let newPostInfo = {
-    //   userName: props.user.name,
-    //   // datePosted: date,
-    //   postText: postText,
-    //   photoUrl: photoUrl,
-    //   // formattedDate: await formatDate(date),
-    //   // formattedTime: await formatTime(date),
-    // };
-    let userId = await UserApi.getUserById(props.user.uid);
-    console.log(userId);
-    // let newPostInfo = {
-    //   post_text: postText, 
-    //   visible_to_all: true, 
-    //   date_posted: await formatDate(date),
-    //   time_posted: await formatTime(date),
-    //   user_id: userId, 
-    //   comments: [], 
-    //   retweets: [], 
-    //   saves: [], 
-    //   likes: [],
-    //   photo_url: photoUrl
-    // }
 
-    // await PostApi.createNewPost(newPostInfo);
-    // addNewPost(props.user.uid, newPostInfo);
+    let newPostInfo = {
+      post_text: postText, 
+      visible_to_all: true, 
+      date_posted: await formatDate(date),
+      time_posted: await formatTime(date),
+      comments: [], 
+      retweets: [], 
+      saves: [], 
+      likes: [],
+      photo_url: photoUrl
+    }
+    
+    await UserApi.getUserById(props.user.uid)
+    .then((response) => response.json())
+    .then((result) => {
+      newPostInfo.user_id = result[0].user_id;
+    })
+
+    await PostApi.createNewPost(newPostInfo);
   };
 
   const profilePicture = (

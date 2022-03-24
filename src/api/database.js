@@ -19,8 +19,8 @@ db.get("/users", async (req, res) => {
 
 //Get user by uid
 db.get("/users/:uid", async (req, res) => {
-  const data = req.body;
-  const user = await pool.query('SELECT * FROM users WHERE uid = $1', [data.uid]);
+  const data = req.params;
+  const user = await pool.query("SELECT * FROM users WHERE uid = $1", [data.uid]);
   res.json(user.rows);
 });
 
