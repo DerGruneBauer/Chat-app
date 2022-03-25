@@ -6,6 +6,8 @@ import retweetIcon from "../../assets/retweet.svg";
 import chatBubble from "../../assets/chatBubbleOutline.svg";
 import heartIcon from "../../assets/heartOutline.svg";
 import bookmarkIcon from "../../assets/bookmarkBorder.svg";
+import UserApi from "../../api/UserApi.js";
+import PostsApi from "../../api/PostsApi.js";
 
 const PostCard = (props) => {
 
@@ -15,6 +17,8 @@ const PostCard = (props) => {
       isActive: false,
       color: "",
       url: chatBubble,
+      onClick: null,
+      onClickTwo: null,
       alt: "Comment action button icon",
     },
     {
@@ -22,6 +26,8 @@ const PostCard = (props) => {
       isActive: false,
       color: "",
       url: retweetIcon,
+      onClick: null,
+      onClickTwo: null,
       alt: "Retweet action button icon",
     },
     {
@@ -29,6 +35,8 @@ const PostCard = (props) => {
       isActive: false,
       color: "",
       url: heartIcon,
+      onClick: () => UserApi.updateUserLikedPosts(props.id),
+      onClickTwo: () => PostsApi.updatePostsLikes(props.id, props.user.uid),
       alt: "Like action button icon",
     },
     {
@@ -36,6 +44,8 @@ const PostCard = (props) => {
       isActive: false,
       color: "blue",
       url: bookmarkIcon,
+      onClick: null,
+      onClickTwo: null,
       alt: "Save action button icon",
     },
   ]);
@@ -44,6 +54,8 @@ const PostCard = (props) => {
     <CardActionButton
     key={button.id}
     id={button.id}
+    onClick={button.onClick}
+    onClickTwo={button.onClickTwo}
     color={button.color}
     actionImgAlt={button.alt}
     actionIconUrl={button.url}

@@ -1,5 +1,5 @@
 let PostApi = {
-    
+
     getAllPosts(){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
@@ -15,10 +15,19 @@ let PostApi = {
         headers.append("Content-Type", "application/json");
         var requestOptions = {
             method: 'GET',
-            headers: headers,
-            body: JSON.stringify(uid)
+            headers: headers
         };
         return fetch(`http://localhost:8080/posts/${uid}`, requestOptions)
+    },
+
+    updatePostsLikes(postid, uid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/posts/${postid}/likes/${uid}`, requestOptions)
     },
 
     createNewPost(postData){

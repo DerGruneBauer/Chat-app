@@ -24,6 +24,16 @@ db.get("/users/:uid", async (req, res) => {
   res.json(user.rows);
 });
 
+///Update when user likes a post add post to user's liked posts list
+db.put("/users/likedposts/:postid", async (req, res) => {
+  const data = req.params;
+  const update = await pool.query(
+    "UPDATE users SET liked_posts = array_prepend($1 , liked_posts)",
+    [data.postid]
+  );
+  res.json(update.rows);
+});
+
 //Add a user
 db.post("/users", async (req, res) => {
   const {
@@ -78,16 +88,28 @@ db.get("/posts", async (req, res) => {
 
 //Get all posts by user
 db.get("/posts/:uid", async (req, res) => {
+  const data = req.params;
   const post = await pool.query(
-    "SELECT * FROM posts WHERE user_id=(select user_id from postgres.users where uid = $1)",
-    [req.params.uid]
+    "SELECT * FROM posts WHERE user_id=(select user_id from users where uid = $1)",
+    [data.uid]
   );
   res.json(post.rows);
 });
 
-//Add a post
+//Get all posts liked by user
+
+//Update when user likes a post add user to likes column
+db.put("/posts/:postid/likes/:uid", async (req, res) => {
+  const data  = req.params;
+  const update = await pool.query(
+    "UPDATE posts SET likes = array_prepend((select user_id from users where uid = $1), likes) WHERE post_id = $2",
+    [data.uid, data.postid]
+  );
+  res.json(update.rows);
+});
+
+//Post/add a tweet
 db.post("/posts", async (req, res) => {
-    console.log(req.body);
   const { post_text, visible_to_all, date_posted, time_posted, user_id, comments, retweets, saves, likes, photo_url } = req.body;
   const post = await pool.query(
     `INSERT INTO posts (

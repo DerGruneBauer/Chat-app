@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import styles from "./Profile.module.css";
 import followIcon from "../../assets/followUser.svg";
 import PostCard from "../../components/PostCard/PostCard";
-import { getUserPosts } from "../../firebase";
 import SideBarNav from "../../components/SideBarNav/SideBarNav";
+import PostApi from "../../api/PostsApi";
 
 const Profile = (props) => {
   const [selectedPosts, setSelectedPosts] = useState([]);
@@ -32,8 +32,11 @@ const Profile = (props) => {
 
   const getUserTweets = async () => {
     if (selectedNavItem === "Tweets") {
-      let posts = await getUserPosts(props.user.uid);
-      setSelectedPosts(posts);
+      await PostApi.getPostsByUid(props.user.uid)
+      .then((response) => response.json())
+      .then((res) => {
+        setSelectedPosts(res.reverse());
+      })
     } else if (selectedNavItem === "Tweets & Replies") {
       setSelectedPosts([]);
       console.log("showing tweets and replies");
@@ -46,23 +49,24 @@ const Profile = (props) => {
     }
   };
 
-  const formateDate = (seconds) => {
-    var time = new Date(1970, 0, 1);
-    time.setSeconds(seconds);
-    return time.toDateString();
+  const formateDate = (date, time) => {
+    return `${date.substring(0, 10)} at ${time.substring(0, 5)}`;
   };
 
+  //update below to use post username instead of props username. 
   const mappedPosts = selectedPosts.map((post) => (
     <PostCard
-      key={props.id}
+      key={post.post_id}
+      id={post.post_id}
       user={props.user}
-      userName={post.userName}
-      postText={post.postText}
-      comments={post.comments}
-      saves={post.saves}
-      retweets={post.retweets}
-      photoUrl={post.photoUrl}
-      date={formateDate(post.datePosted.seconds)}
+      userName={props.user.name}
+      postText={post.post_text}
+      comments={post.comments.length}
+      saves={post.saves.length}
+      retweets={post.retweets.length}
+      photoUrl={post.photo_url}
+      date={formateDate(post.date_posted, post.time_posted)}
+      postersPhotoUrl={post.postersPhotoUrl}
     />
   ));
 
