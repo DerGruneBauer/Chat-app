@@ -78,7 +78,7 @@ const Profile = (props) => {
       {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
       <div className={styles.userInfo}>
         <h2>
-          {props.user.name === "" ? "Edit name in settings" : props.user.name}
+          {props.user.displayName === "" ? "Edit name in settings" : props.user.displayName}
         </h2>
         <div className={styles.userStats}>
           <span>

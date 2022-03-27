@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./Header.module.css";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react/cjs/react.development";
-import {
-  getUserInformation,
-} from "../../firebase";
 
 const Header = (props) => {
   

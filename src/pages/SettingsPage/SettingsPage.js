@@ -6,7 +6,7 @@ import fileUpload from "../../assets/fileUpload.svg";
 const Settings = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [updatedName, setUpdatedName] = useState(props.user.name);
+  const [updatedName, setUpdatedName] = useState(props.user.userName);
   const [updatedDisplayName, setUpdatedDisplayName] = useState(props.user.displayName);
   const [updatedPhotoUrl, setUpdatedPhotoUrl] = useState(props.user.photoUrl);
   const [updatedBio, setUpdatedBio] = useState(props.user.bio);
@@ -14,7 +14,7 @@ const Settings = (props) => {
 
   const updateUserInfo = async () => {
     let updatedInfo = {
-      name: updatedName,
+      userName: updatedName,
       displayName: updatedDisplayName,
       photoUrl: updatedPhotoUrl,
       bio: updatedBio,
@@ -56,7 +56,7 @@ const Settings = (props) => {
                 id="name"
                 type="text"
                 onChange={(e) => setUpdatedName(e.target.value)}
-                defaultValue={props.user.name}
+                defaultValue={props.user.displayName}
               ></input>
             </label>
           </div>
@@ -66,8 +66,9 @@ const Settings = (props) => {
               <input
                 id="username"
                 type="text"
-                onChange={(e) => setUpdatedDisplayName(e.target.value)}
-                defaultValue={props.user.displayName}
+                // onChange={(e) => setUpdatedDisplayName(e.target.value)}
+                // defaultValue={props.user.displayName}
+                disabled value={props.user.userName}
               ></input>
             </label>
           </div>
@@ -119,11 +120,11 @@ const Settings = (props) => {
           </div>
           <div className={styles.infoSection}>
             <p>NAME</p>
-            <p>{props.user.name}</p>
+            <p>{props.user.displayName}</p>
           </div>
           <div className={styles.infoSection}>
             <p>USERNAME</p>
-            <p>{props.user.displayName}</p>
+            <p>{props.user.userName}</p>
           </div>
           <div className={styles.infoSection}>
             <p>BIO</p>

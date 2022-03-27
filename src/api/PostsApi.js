@@ -20,6 +20,16 @@ let PostApi = {
         return fetch(`http://localhost:8080/posts/${uid}`, requestOptions)
     },
 
+    getPostLikesRetweetsCommentsSaves(postid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'GET',
+            headers: headers
+        };
+        return fetch(`http://localhost:8080/posts/${postid}/likesretweetscommentssaves`, requestOptions)
+    },
+
     updatePostsLikes(postid, uid){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");

@@ -18,7 +18,16 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [uid, setUid] = useState("");
-  const [loggedInUser, setLoggedInUser] = useState({});
+  const [loggedInUser, setLoggedInUser] = useState({
+    uid: "",
+    authProvider: "",
+    email: "",
+    userName: "",
+    displayName: "",
+    photoUrl: "",
+    bio: "",
+    userId: "",
+  });
 
   //may run into issue where user types URL into bar and receives login/register even through already logged in.
   //If logged in should redirect to homepage when trying to access register/login.
@@ -29,7 +38,7 @@ function App() {
 
   const updateUsersInformation = (updatedUser) => {
     setLoggedInUser(updatedUser);
-  }
+  };
 
   const updateModalStatus = (bool) => {
     setShowSettingsModal(bool);
@@ -42,6 +51,7 @@ function App() {
   useEffect(() => {
     if (uid != "") {
       getUserInformation(uid).then((res) => {
+        console.log(res);
         setLoggedInUser(res);
         setIsLoggedIn(true);
       });
@@ -76,7 +86,9 @@ function App() {
             <Route
               exact
               path="/settings"
-              element={<Settings updateUser={updateUsersInformation} user={user} />}
+              element={
+                <Settings updateUser={updateUsersInformation} user={user} />
+              }
             />
             <Route exact path="/explore" element={<Explore user={user} />} />
             <Route

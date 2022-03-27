@@ -96,6 +96,16 @@ db.get("/posts/:uid", async (req, res) => {
   res.json(post.rows);
 });
 
+//Get posts likes, retweets, comments, and saves
+db.get("/posts/:postid/likesretweetscommentssaves", async (req, res) => {
+  const data = req.params;
+  const post = await pool.query(
+    "SELECT comments, retweets, saves, likes FROM posts WHERE post_id=$1",
+    [data.postid]
+  );
+  res.json(post.rows);
+});
+
 //Get all posts liked by user
 
 //Update when user likes a post add user to likes column

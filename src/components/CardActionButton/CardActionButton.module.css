@@ -27,3 +27,8 @@
 .actionButtonContainer > img[data-color="green"] {
     filter: invert(41%) sepia(88%) saturate(1094%) hue-rotate(87deg) brightness(107%) contrast(116%);
 }
+
+.actionButtonContainer > img[data-color="black"] {
+    filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(200deg)
+    brightness(103%) contrast(100%);
+}

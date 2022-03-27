@@ -19,15 +19,17 @@ const Register = (props) => {
 
   const register = async (event) => {
     event.preventDefault();
-    let user = await registerWithEmailAndPassword(email, password, userName);
-    if(user instanceof Error) {
-      console.log("error logging in");
-      setError(true);
-    } else {
-      props.getUserUid(user.uid);
-      setError(false);
-      navigate("/");
-    }
+    await registerWithEmailAndPassword(email, password, userName)
+    .then(res => {
+      if(res instanceof Error) {
+        console.log("error logging in");
+        setError(true);
+      } else {
+        props.getUserUid(res.uid);
+        setError(false);
+        navigate("/");
+      }
+    });
   };
 
   return (

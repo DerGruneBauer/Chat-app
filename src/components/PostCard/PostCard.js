@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PostCard.module.css";
-import { useState } from "react/cjs/react.development";
 import CardActionButton from "../CardActionButton/CardActionButton";
 import retweetIcon from "../../assets/retweet.svg";
 import chatBubble from "../../assets/chatBubbleOutline.svg";
@@ -11,29 +10,32 @@ import PostsApi from "../../api/PostsApi.js";
 
 const PostCard = (props) => {
 
+
+  const placeholderMethod = () => {}
+
   const [cardActionButtons, setCardActionButtons] = useState([
     {
       id: 0,
-      isActive: false,
-      color: "",
+      isActive: true,
+      activeColor: "",
       url: chatBubble,
-      onClick: null,
-      onClickTwo: null,
+      onClick: () => placeholderMethod(),
+      onClickTwo: () => placeholderMethod(),
       alt: "Comment action button icon",
     },
     {
       id: 1,
       isActive: false,
-      color: "",
+      activeColor: "green",
       url: retweetIcon,
-      onClick: null,
-      onClickTwo: null,
+      onClick: () => placeholderMethod(),
+      onClickTwo: () => placeholderMethod(),
       alt: "Retweet action button icon",
     },
     {
       id: 2,
       isActive: false,
-      color: "",
+      activeColor: "red",
       url: heartIcon,
       onClick: () => UserApi.updateUserLikedPosts(props.id),
       onClickTwo: () => PostsApi.updatePostsLikes(props.id, props.user.uid),
@@ -42,13 +44,30 @@ const PostCard = (props) => {
     {
       id: 3,
       isActive: false,
-      color: "blue",
+      activeColor: "blue",
       url: bookmarkIcon,
-      onClick: null,
-      onClickTwo: null,
+      onClick: () => placeholderMethod(),
+      onClickTwo: () => placeholderMethod(),
       alt: "Save action button icon",
     },
   ]);
+
+  // const updateActionButtons = (id) => {
+  //   const updatedActionButtons = cardActionButtons.map((button) => {
+  //     return button.id === id
+  //     ? {...button, isActive: true} : { ...button, isActive: false };
+  //   });
+  //   setCardActionButtons(updatedActionButtons);
+  // };
+
+  const checkIfUserHasInteracted = (uid, postid) => {
+    PostsApi.getPostLikesRetweetsCommentsSaves(postid)
+    .then((response) =>  response.json())
+    .then((res) => {
+      console.log(res);
+    })
+  }
+
 
   const mappedActionBar = cardActionButtons.map((button) => (
     <CardActionButton
@@ -56,9 +75,11 @@ const PostCard = (props) => {
     id={button.id}
     onClick={button.onClick}
     onClickTwo={button.onClickTwo}
-    color={button.color}
+    activeColor={button.activeColor}
+    updateButtonColor={() => checkIfUserHasInteracted(props.user.uid, props.id)}
     actionImgAlt={button.alt}
     actionIconUrl={button.url}
+    isActive={button.isActive}
   />
   )
   );
