@@ -1,7 +1,7 @@
 .sideBarNav {
     height: 175px;
     width: 85%;
-    max-width: 400px;
+    /* max-width: 400px; */
     border-radius: 10px;
     padding: 0 30px 0 0;
     margin: 0 auto 15px;
@@ -21,7 +21,7 @@
     border: solid 1.5px #2f64d6;
     background-color: #2f64d6;
     height: 25px;
-    border-radius: 5px;
+    border-radius: 0 5px 5px 0;
   }
   
   .unactiveSlidingBar {
@@ -42,11 +42,11 @@
     text-align: start;
     border-radius: 5px;
   }
-  
-  .selectedItem {
+
+  .selectedItem, .navButtonContainer > button:hover {
     color: #2f64d6;
   }
-  
+
   .unselectedItem {
     color: grey;
   }

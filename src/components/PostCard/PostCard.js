@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PostCard.module.css";
 import CardActionButton from "../CardActionButton/CardActionButton";
 import retweetIcon from "../../assets/retweet.svg";
@@ -11,16 +11,18 @@ import PostsApi from "../../api/PostsApi.js";
 const PostCard = (props) => {
 
 
-  const placeholderMethod = () => {}
+  const placeholderMethod = () => {
+
+  }
 
   const [cardActionButtons, setCardActionButtons] = useState([
     {
       id: 0,
-      isActive: true,
+      isActive: false,
       activeColor: "",
       url: chatBubble,
-      onClick: () => placeholderMethod(),
-      onClickTwo: () => placeholderMethod(),
+      onClick: [() => placeholderMethod(),() => placeholderMethod()],
+      onClickTwo: [() => placeholderMethod(),() => placeholderMethod()],
       alt: "Comment action button icon",
     },
     {
@@ -28,8 +30,8 @@ const PostCard = (props) => {
       isActive: false,
       activeColor: "green",
       url: retweetIcon,
-      onClick: () => placeholderMethod(),
-      onClickTwo: () => placeholderMethod(),
+      onClick: [() => placeholderMethod(),() => placeholderMethod()],
+      onClickTwo: [() => placeholderMethod(),() => placeholderMethod()],
       alt: "Retweet action button icon",
     },
     {
@@ -37,8 +39,8 @@ const PostCard = (props) => {
       isActive: false,
       activeColor: "red",
       url: heartIcon,
-      onClick: () => UserApi.updateUserLikedPosts(props.id),
-      onClickTwo: () => PostsApi.updatePostsLikes(props.id, props.user.uid),
+      onClick: [() => UserApi.updateUserLikedPosts(props.id), () => UserApi.updateUserLikedPostsUnlike(props.id)],
+      onClickTwo:[() => PostsApi.updatePostsLikes(props.id, props.user.uid), () => PostsApi.updatePostsLikesUnlike(props.id, props.user.uid)],
       alt: "Like action button icon",
     },
     {
@@ -46,28 +48,36 @@ const PostCard = (props) => {
       isActive: false,
       activeColor: "blue",
       url: bookmarkIcon,
-      onClick: () => placeholderMethod(),
-      onClickTwo: () => placeholderMethod(),
+      onClick: [() => placeholderMethod(),() => placeholderMethod()],
+      onClickTwo: [() => placeholderMethod(),() => placeholderMethod()],
       alt: "Save action button icon",
     },
   ]);
 
-  // const updateActionButtons = (id) => {
-  //   const updatedActionButtons = cardActionButtons.map((button) => {
-  //     return button.id === id
-  //     ? {...button, isActive: true} : { ...button, isActive: false };
-  //   });
-  //   setCardActionButtons(updatedActionButtons);
-  // };
+  const updateActionButtons = (id) => {
+    const updatedActionButtons = cardActionButtons.map((button) => {
+      return button.id === id ? {...button, isActive: !button.isActive} : {...button, isActive: button.isActive}
+    });
+    setCardActionButtons(updatedActionButtons);
+  };
 
-  const checkIfUserHasInteracted = (uid, postid) => {
+
+  const checkIfUserHasInteracted = (userId, postid) => {
     PostsApi.getPostLikesRetweetsCommentsSaves(postid)
     .then((response) =>  response.json())
     .then((res) => {
-      console.log(res);
+      // cardActionButtons[1].isActive = res[0].retweets.includes(userId);
+      if(res[0].likes.includes(userId)){
+        updateActionButtons(2);
+      }
+      // cardActionButtons[3].isActive = res[0].saves.includes(userId);
     })
   }
 
+  useEffect(() => {
+    
+  }, [])
+  
 
   const mappedActionBar = cardActionButtons.map((button) => (
     <CardActionButton
@@ -76,7 +86,7 @@ const PostCard = (props) => {
     onClick={button.onClick}
     onClickTwo={button.onClickTwo}
     activeColor={button.activeColor}
-    updateButtonColor={() => checkIfUserHasInteracted(props.user.uid, props.id)}
+    // updateButtonColor={() => checkIfUserHasInteracted(props.user.userId, props.id)}
     actionImgAlt={button.alt}
     actionIconUrl={button.url}
     isActive={button.isActive}
@@ -89,7 +99,7 @@ const PostCard = (props) => {
       <div className={styles.cardOwnerInfo}>
         <img></img>
         <div className={styles.cardData}>
-          <span>{props.userName}</span>
+          <span>{props.displayName}</span>
           <span>{props.date}</span>
         </div>
       </div>

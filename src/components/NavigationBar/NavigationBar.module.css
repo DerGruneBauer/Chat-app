@@ -28,8 +28,8 @@
 
 .activeSlidingBar {
   border: 1px solid #2f64d6;
-  border-radius: 10px;
-  height: 2px;
+  border-radius: 10px 10px 0 0;
+  height: 1.75px;
   background-color: #2f64d6;
 }
 

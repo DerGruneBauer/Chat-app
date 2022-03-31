@@ -4,6 +4,7 @@ import followIcon from "../../assets/followUser.svg";
 import PostCard from "../../components/PostCard/PostCard";
 import SideBarNav from "../../components/SideBarNav/SideBarNav";
 import PostApi from "../../api/PostsApi";
+import UserApi from "../../api/UserApi";
 
 const Profile = (props) => {
   const [selectedPosts, setSelectedPosts] = useState([]);
@@ -32,7 +33,7 @@ const Profile = (props) => {
 
   const getUserTweets = async () => {
     if (selectedNavItem === "Tweets") {
-      await PostApi.getPostsByUid(props.user.uid)
+      await PostApi.getPostsByUserId(props.user.userId)
       .then((response) => response.json())
       .then((res) => {
         setSelectedPosts(res.reverse());
@@ -53,13 +54,12 @@ const Profile = (props) => {
     return `${date.substring(0, 10)} at ${time.substring(0, 5)}`;
   };
 
-  //update below to use post username instead of props username. 
   const mappedPosts = selectedPosts.map((post) => (
     <PostCard
       key={post.post_id}
       id={post.post_id}
       user={props.user}
-      userName={props.user.name}
+      displayName={post.display_name}
       postText={post.post_text}
       comments={post.comments.length}
       saves={post.saves.length}

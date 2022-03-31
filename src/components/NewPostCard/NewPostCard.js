@@ -3,14 +3,13 @@ import styles from "./NewPostCard.module.css";
 import imageIcon from "../../assets/imageIcon.svg";
 import globeIcon from "../../assets/globeIcon.svg";
 import PostApi from "../../api/PostsApi";
-import UserApi from "../../api/UserApi";
 
 const NewPostCard = (props) => {
   const [photoUrl, setPhotoUrl] = useState("");
   const [postText, setPostText] = useState("");
 
   const formatDate = async (currentDate) => {
-    return `${currentDate.getUTCFullYear()}-${currentDate.getUTCMonth()}-${currentDate.getUTCDay()}`;
+    return `${currentDate.getUTCFullYear()}-${currentDate.getUTCMonth()}-${currentDate.getUTCDate()}`;
   };
 
   const formatTime = async (currentTime) => {
@@ -29,15 +28,10 @@ const NewPostCard = (props) => {
       retweets: [], 
       saves: [], 
       likes: [],
-      photo_url: photoUrl
+      photo_url: photoUrl,
+      user_id: props.user.userId
     }
     
-    await UserApi.getUserById(props.user.uid)
-    .then((response) => response.json())
-    .then((result) => {
-      newPostInfo.user_id = result[0].user_id;
-    })
-
     await PostApi.createNewPost(newPostInfo);
   };
 

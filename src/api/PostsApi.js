@@ -10,14 +10,14 @@ let PostApi = {
         return fetch("http://localhost:8080/posts/", requestOptions)
     },
 
-    getPostsByUid(uid){
+    getPostsByUserId(userid){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
         var requestOptions = {
             method: 'GET',
             headers: headers
         };
-        return fetch(`http://localhost:8080/posts/${uid}`, requestOptions)
+        return fetch(`http://localhost:8080/posts/${userid}`, requestOptions)
     },
 
     getPostLikesRetweetsCommentsSaves(postid){
@@ -38,6 +38,16 @@ let PostApi = {
             headers: headers,
         };
         return fetch(`http://localhost:8080/posts/${postid}/likes/${uid}`, requestOptions)
+    },
+
+    updatePostsLikesUnlike(postid, uid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/posts/${postid}/likes/${uid}/unlike`, requestOptions)
     },
 
     createNewPost(postData){

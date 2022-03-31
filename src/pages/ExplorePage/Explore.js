@@ -3,7 +3,6 @@ import styles from "./Explore.module.css";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBarNav from "../../components/SideBarNav/SideBarNav";
 import PostCard from "../../components/PostCard/PostCard";
-import { searchAllPosts } from "../../firebase";
 
 const Explore = (props) => {
   const [hasSearched, setHasSearched] = useState(false);
@@ -21,18 +20,7 @@ const Explore = (props) => {
     e.preventDefault();
     setSearchedItem(searchBarText);
   }
-
-  useEffect(() => {
-    showPosts();
-  }, [searchedItem]);
-
-
-  const showPosts = async () => {
-    console.log("starting process");
-    let posts = await searchAllPosts("Remi");
-    console.log(posts);
-  }
-
+  
   return (
     <div className={styles.exploreContainer}>
       <SearchBar searchItem={updateSearchedItem} />

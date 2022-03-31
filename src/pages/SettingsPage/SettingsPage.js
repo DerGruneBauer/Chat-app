@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import styles from "./SettingsPage.module.css";
 import { updateUserProfile, updateProfilePicture } from "../../firebase";
 import fileUpload from "../../assets/fileUpload.svg";
+import UserApi from "../../api/UserApi";
 
 const Settings = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [updatedName, setUpdatedName] = useState(props.user.userName);
+  const [updatedUserName, setUpdatedUserName] = useState(props.user.userName);
   const [updatedDisplayName, setUpdatedDisplayName] = useState(props.user.displayName);
   const [updatedPhotoUrl, setUpdatedPhotoUrl] = useState(props.user.photoUrl);
   const [updatedBio, setUpdatedBio] = useState(props.user.bio);
@@ -14,12 +14,17 @@ const Settings = (props) => {
 
   const updateUserInfo = async () => {
     let updatedInfo = {
-      userName: updatedName,
+      userName: updatedUserName,
       displayName: updatedDisplayName,
       photoUrl: updatedPhotoUrl,
       bio: updatedBio,
     };
+
     props.updateUser(await updateUserProfile(props.user.uid, updatedInfo));
+    await UserApi.updateUserNameAndPhoto(props.user.uid, {
+      displayName: updatedDisplayName,
+      photoUrl: updatedPhotoUrl,
+    });
   };
 
   const updateProfilePhoto = async (e) => {
@@ -55,7 +60,7 @@ const Settings = (props) => {
               <input
                 id="name"
                 type="text"
-                onChange={(e) => setUpdatedName(e.target.value)}
+                onChange={(e) => setUpdatedDisplayName(e.target.value)}
                 defaultValue={props.user.displayName}
               ></input>
             </label>
@@ -66,8 +71,6 @@ const Settings = (props) => {
               <input
                 id="username"
                 type="text"
-                // onChange={(e) => setUpdatedDisplayName(e.target.value)}
-                // defaultValue={props.user.displayName}
                 disabled value={props.user.userName}
               ></input>
             </label>
