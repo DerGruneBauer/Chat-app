@@ -7,8 +7,6 @@ const Home = (props) => {
   return (
         <div className={styles.homeContainer}>
           <NewPostCard user={props.user} />
-          <PostCard user={props.user} />
-          <PostCard user={props.user} />
         </div>
   );
 };

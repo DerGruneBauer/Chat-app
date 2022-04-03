@@ -30,6 +30,16 @@ let UserApi = {
         return fetch(`http://localhost:8080/users/${userid}`, requestOptions)
     },
 
+    getUserLikedPostArray(userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'GET',
+            headers: headers
+        };
+        return fetch(`http://localhost:8080/users/${userid}/likedposts`, requestOptions)
+    },
+
     updateUserNameAndPhoto(uid, userData){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
@@ -41,25 +51,24 @@ let UserApi = {
         return fetch(`http://localhost:8080/users/${uid}`, requestOptions)
     },
 
-    updateUserLikedPosts(postid){
+    updateUserLikedPosts(postid, userid){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
         var requestOptions = {
             method: 'PUT',
             headers: headers,
         };
-    
-        return fetch(`http://localhost:8080/users/likedposts/${postid}/like`, requestOptions); 
+        return fetch(`http://localhost:8080/users/${userid}/likedposts/${postid}/like`, requestOptions); 
     },
 
-    updateUserLikedPostsUnlike(postid){
+    updateUserLikedPostsUnlike(postid, userid){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
         var requestOptions = {
             method: 'PUT',
             headers: headers,
         };
-        return fetch(`http://localhost:8080/users/likedposts/${postid}/unlike`, requestOptions)
+        return fetch(`http://localhost:8080/users/${userid}/likedposts/${postid}/unlike`, requestOptions)
     },
 
     createNewUser(userData){

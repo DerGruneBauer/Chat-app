@@ -39,7 +39,7 @@ const PostCard = (props) => {
       isActive: false,
       activeColor: "red",
       url: heartIcon,
-      onClick: [() => UserApi.updateUserLikedPosts(props.id), () => UserApi.updateUserLikedPostsUnlike(props.id)],
+      onClick: [() => UserApi.updateUserLikedPosts(props.id, props.user.userId), () => UserApi.updateUserLikedPostsUnlike(props.id, props.user.userId)],
       onClickTwo:[() => PostsApi.updatePostsLikes(props.id, props.user.uid), () => PostsApi.updatePostsLikesUnlike(props.id, props.user.uid)],
       alt: "Like action button icon",
     },
@@ -54,29 +54,36 @@ const PostCard = (props) => {
     },
   ]);
 
-  const updateActionButtons = (id) => {
+  useEffect(() => {
+    checkIfUserHasInteracted(props.user.userId, props.id);
+  })
+
+  const setInitialButtonState = (id) => {
     const updatedActionButtons = cardActionButtons.map((button) => {
-      return button.id === id ? {...button, isActive: !button.isActive} : {...button, isActive: button.isActive}
-    });
+      if(button.id === id) {
+        return {...button, isActive: true};
+      }
+      return button;
+    })
     setCardActionButtons(updatedActionButtons);
   };
 
+  const updateActiveState = (id) => {
+      const updatedActionButtons = cardActionButtons.map((button) => {
+      return button.id === id ? {...button, isActive: !button.isActive} : {...button, isActive: button.isActive}
+    });
+    setCardActionButtons(updatedActionButtons);
+  }
 
   const checkIfUserHasInteracted = (userId, postid) => {
     PostsApi.getPostLikesRetweetsCommentsSaves(postid)
     .then((response) =>  response.json())
     .then((res) => {
-      // cardActionButtons[1].isActive = res[0].retweets.includes(userId);
       if(res[0].likes.includes(userId)){
-        updateActionButtons(2);
+        setInitialButtonState(2);
       }
-      // cardActionButtons[3].isActive = res[0].saves.includes(userId);
     })
   }
-
-  useEffect(() => {
-    
-  }, [])
   
 
   const mappedActionBar = cardActionButtons.map((button) => (
@@ -86,7 +93,7 @@ const PostCard = (props) => {
     onClick={button.onClick}
     onClickTwo={button.onClickTwo}
     activeColor={button.activeColor}
-    // updateButtonColor={() => checkIfUserHasInteracted(props.user.userId, props.id)}
+    updateButtonColor={() => updateActiveState(button.id)}
     actionImgAlt={button.alt}
     actionIconUrl={button.url}
     isActive={button.isActive}
@@ -104,7 +111,7 @@ const PostCard = (props) => {
         </div>
       </div>
       <p>{props.postText}</p>
-      {props.photoUrl == "" ? null : <img />}
+      {props.photoUrl === "" ? null : <img />}
       <div className={styles.cardDetails}>
         <span>{props.comments} Comments</span>
         <span>{props.retweets} Retweets</span>
@@ -114,7 +121,7 @@ const PostCard = (props) => {
         {mappedActionBar}
       </div>
       <div className={styles.userReplySection}>
-        {props.user.photoUrl=="" ? <img/> : <img src={props.user.photoUrl}/>}
+        {props.user.photoUrl==="" ? <img/> : <img src={props.user.photoUrl}/>}
         <input placeholder="Tweet your reply"></input>
       </div>
     </div>

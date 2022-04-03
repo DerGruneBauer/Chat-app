@@ -17,7 +17,17 @@ let PostApi = {
             method: 'GET',
             headers: headers
         };
-        return fetch(`http://localhost:8080/posts/${userid}`, requestOptions)
+        return fetch(`http://localhost:8080/posts/users/${userid}`, requestOptions)
+    },
+
+    getPostsByPostId(postid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'GET',
+            headers: headers
+        };
+        return fetch(`http://localhost:8080/posts/${postid}`, requestOptions)
     },
 
     getPostLikesRetweetsCommentsSaves(postid){

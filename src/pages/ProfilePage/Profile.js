@@ -45,8 +45,26 @@ const Profile = (props) => {
       setSelectedPosts([]);
       console.log("showing media");
     } else {
-      setSelectedPosts([]);
-      console.log("showing likes");
+
+       let postArray = await UserApi.getUserLikedPostArray(props.user.userId)
+        .then((res) => res.json())
+        .then((result) => {
+          return result[0].liked_posts;
+        });
+
+        let mappedRequest = postArray.map(post => PostApi.getPostsByPostId(post));
+
+        Promise.all(mappedRequest)
+        .then(responses => {
+          return responses;
+        })
+        .then(responses => Promise.all(responses.map(r => r.json())))
+        .then(posts => {
+          let finalPosts = posts.map((post) => {
+            return post[0];
+          });
+          setSelectedPosts(finalPosts);
+        });
     }
   };
 
