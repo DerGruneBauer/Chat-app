@@ -41,7 +41,27 @@ db.get("/users/:userid/likedposts", async (req, res) => {
   res.json(post.rows);
 });
 
-///Update when user unlikes a post delete post to user's liked posts list
+//Update when user unsaves a post - delete post to user's saved posts list
+db.put("/users/:userid/savedposts/:postid/unsave", async (req, res) => {
+  const data = req.params;
+  let update = await pool.query(
+      "UPDATE users SET saved_posts = array_remove(saved_posts, $2) WHERE user_id = $1",
+      [data.userid, data.postid]
+    );
+  res.json(update.rows);
+});
+
+//Update when user saves a post - add post to user's saved posts list
+db.put("/users/:userid/savedposts/:postid/save", async (req, res) => {
+  const data = req.params;
+   let update = await pool.query(
+      "UPDATE users SET saved_posts = array_prepend($2 , saved_posts) WHERE user_id = $1",
+      [data.userid, data.postid]
+   );
+  res.json(update.rows);
+});
+
+///Update when user unlikes a post - delete post to user's liked posts list
 db.put("/users/:userid/likedposts/:postid/unlike", async (req, res) => {
   const data = req.params;
   let update = await pool.query(
@@ -51,7 +71,7 @@ db.put("/users/:userid/likedposts/:postid/unlike", async (req, res) => {
   res.json(update.rows);
 });
 
-///Update when user likes a post add post to user's liked posts list
+///Update when user likes a post - add post to user's liked posts list
 db.put("/users/:userid/likedposts/:postid/like", async (req, res) => {
   const data = req.params;
    let update = await pool.query(
@@ -137,7 +157,7 @@ db.get("/posts/users/:userid", async (req, res) => {
 db.get("/posts/:postid", async (req, res) => {
   const data = req.params;
   const post = await pool.query(
-    "SELECT * FROM posts WHERE post_id=$1",
+    "SELECT posts.*, users.display_name FROM posts INNER JOIN users ON posts.user_id=(SELECT user_id FROM posts WHERE post_id=$1) WHERE post_id=$1",
     [data.postid]
   );
   res.json(post.rows);
@@ -153,7 +173,27 @@ db.get("/posts/:postid/likesretweetscommentssaves", async (req, res) => {
     res.json(post.rows);
 });
 
-//Update when user likes a post add user to likes column
+//Update when user saves a post - add user to saves column
+db.put("/posts/:postid/saves/:uid", async (req, res) => {
+  const data  = req.params;
+   let update = await pool.query(
+      "UPDATE posts SET saves = array_prepend((select user_id from users where uid = $1), saves) WHERE post_id = $2",
+      [data.uid, data.postid]
+    );
+  res.json(update.rows);
+});
+
+//Update when user unsaves a post - delete user from saves column
+db.put("/posts/:postid/saves/:uid/unsave", async (req, res) => {
+  const data  = req.params;
+   let update = await pool.query(
+      "UPDATE posts SET saves = array_remove(saves, (SELECT user_id FROM users WHERE uid = $1)) WHERE post_id = $2",
+      [data.uid, data.postid]
+    );
+  res.json(update.rows);
+});
+
+//Update when user likes a post - add user to likes column
 db.put("/posts/:postid/likes/:uid", async (req, res) => {
   const data  = req.params;
    let update = await pool.query(
@@ -163,7 +203,7 @@ db.put("/posts/:postid/likes/:uid", async (req, res) => {
   res.json(update.rows);
 });
 
-//Update when user unlikes a post delete user to likes column
+//Update when user unlikes a post - delete user from likes column
 db.put("/posts/:postid/likes/:uid/unlike", async (req, res) => {
   const data  = req.params;
    let update = await pool.query(

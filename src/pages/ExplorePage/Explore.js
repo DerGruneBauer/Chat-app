@@ -26,8 +26,8 @@ const Explore = (props) => {
       <SearchBar searchItem={updateSearchedItem} />
       <SideBarNav updateShownItems={updateShownItems} sideBarNav={sideBarNav}/>
       <div className={styles.postSection}>
-        <PostCard user={props.user} />
-        <PostCard user={props.user} />
+        {/* <PostCard user={props.user} />
+        <PostCard user={props.user} /> */}
       </div>
     </div>
   );

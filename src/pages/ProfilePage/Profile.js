@@ -34,10 +34,10 @@ const Profile = (props) => {
   const getUserTweets = async () => {
     if (selectedNavItem === "Tweets") {
       await PostApi.getPostsByUserId(props.user.userId)
-      .then((response) => response.json())
-      .then((res) => {
-        setSelectedPosts(res.reverse());
-      })
+        .then((response) => response.json())
+        .then((res) => {
+          setSelectedPosts(res.reverse());
+        });
     } else if (selectedNavItem === "Tweets & Replies") {
       setSelectedPosts([]);
       console.log("showing tweets and replies");
@@ -45,21 +45,22 @@ const Profile = (props) => {
       setSelectedPosts([]);
       console.log("showing media");
     } else {
-
-       let postArray = await UserApi.getUserLikedPostArray(props.user.userId)
+      let postArray = await UserApi.getUserLikedPostArray(props.user.userId)
         .then((res) => res.json())
         .then((result) => {
           return result[0].liked_posts;
         });
 
-        let mappedRequest = postArray.map(post => PostApi.getPostsByPostId(post));
+      let mappedRequest = postArray.map((post) =>
+        PostApi.getPostsByPostId(post)
+      );
 
-        Promise.all(mappedRequest)
-        .then(responses => {
+      Promise.all(mappedRequest)
+        .then((responses) => {
           return responses;
         })
-        .then(responses => Promise.all(responses.map(r => r.json())))
-        .then(posts => {
+        .then((responses) => Promise.all(responses.map((r) => r.json())))
+        .then((posts) => {
           let finalPosts = posts.map((post) => {
             return post[0];
           });

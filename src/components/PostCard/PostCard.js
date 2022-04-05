@@ -15,6 +15,15 @@ const PostCard = (props) => {
 
   }
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [commentsRetweetsSaves, setCommentsRetweetsSaves] = useState([
+    {
+      comments: [],
+      retweets: [],
+      saves: []
+    }
+  ]);
+
   const [cardActionButtons, setCardActionButtons] = useState([
     {
       id: 0,
@@ -48,15 +57,15 @@ const PostCard = (props) => {
       isActive: false,
       activeColor: "blue",
       url: bookmarkIcon,
-      onClick: [() => placeholderMethod(),() => placeholderMethod()],
-      onClickTwo: [() => placeholderMethod(),() => placeholderMethod()],
+      onClick: [() => UserApi.updateUserSavedPosts(props.id, props.user.userId),() => UserApi.updateUserSavedPostsUnsave(props.id, props.user.userId)],
+      onClickTwo: [() => PostsApi.updatePostsSaves(props.id, props.user.userId),() => PostsApi.updatePostsSavesUnsave(props.id, props.user.userId)],
       alt: "Save action button icon",
     },
   ]);
 
-  useEffect(() => {
-    checkIfUserHasInteracted(props.user.userId, props.id);
-  })
+  // useEffect(() => {
+  //   checkIfUserHasInteracted(props.user.userId, props.id);
+  // })
 
   const setInitialButtonState = (id) => {
     const updatedActionButtons = cardActionButtons.map((button) => {
@@ -79,9 +88,15 @@ const PostCard = (props) => {
     PostsApi.getPostLikesRetweetsCommentsSaves(postid)
     .then((response) =>  response.json())
     .then((res) => {
+      console.log(res);
+      setCommentsRetweetsSaves(res);
       if(res[0].likes.includes(userId)){
         setInitialButtonState(2);
       }
+      if(res[0].saves.includes(userId)){
+        setInitialButtonState(3);
+      }
+      setIsLoading(false);
     })
   }
   
@@ -101,7 +116,7 @@ const PostCard = (props) => {
   )
   );
 
-  return (
+  const loadedPages = (
     <div className={styles.postCardContainer}>
       <div className={styles.cardOwnerInfo}>
         <img></img>
@@ -113,9 +128,9 @@ const PostCard = (props) => {
       <p>{props.postText}</p>
       {props.photoUrl === "" ? null : <img />}
       <div className={styles.cardDetails}>
-        <span>{props.comments} Comments</span>
-        <span>{props.retweets} Retweets</span>
-        <span>{props.saves} Saved</span>
+        <span>{commentsRetweetsSaves[0].comments.length} Comments</span>
+        <span>{commentsRetweetsSaves[0].retweets.length} Retweets</span>
+        <span>{commentsRetweetsSaves[0].saves.length} Saved</span>
       </div>
       <div className={styles.cardActions}>
         {mappedActionBar}
@@ -125,7 +140,9 @@ const PostCard = (props) => {
         <input placeholder="Tweet your reply"></input>
       </div>
     </div>
-  );
+  )
+
+  return <>{isLoading ? "Loading" : loadedPages}</>;
 };
 
 export default PostCard;

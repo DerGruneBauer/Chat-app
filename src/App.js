@@ -51,7 +51,6 @@ function App() {
   useEffect(() => {
     if (uid != "") {
       getUserInformation(uid).then((res) => {
-        console.log(res);
         setLoggedInUser(res);
         setIsLoggedIn(true);
       });

@@ -51,6 +51,26 @@ let UserApi = {
         return fetch(`http://localhost:8080/users/${uid}`, requestOptions)
     },
 
+    updateUserSavedPosts(postid, userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/users/${userid}/savedposts/${postid}/save`, requestOptions); 
+    },
+
+    updateUserSavedPostsUnsave(postid, userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/users/${userid}/savedposts/${postid}/unsave`, requestOptions)
+    },
+
     updateUserLikedPosts(postid, userid){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");

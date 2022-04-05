@@ -40,6 +40,26 @@ let PostApi = {
         return fetch(`http://localhost:8080/posts/${postid}/likesretweetscommentssaves`, requestOptions)
     },
 
+    updatePostsSaves(postid, uid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/posts/${postid}/saves/${uid}`, requestOptions)
+    },
+
+    updatePostsSavesUnsave(postid, uid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/posts/${postid}/saves/${uid}/unsave`, requestOptions)
+    },
+
     updatePostsLikes(postid, uid){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
