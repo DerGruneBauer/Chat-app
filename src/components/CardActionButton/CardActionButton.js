@@ -11,13 +11,13 @@ const CardActionButton = (props) => {
         onClick={props.isActive ? () => {
           props.onClick[1]();
           props.onClickTwo[1]()
-          .then((res) => {
+          .then(() => {
             props.updateButtonColor(props.id);
           });
         } : () => {
           props.onClick[0]();
           props.onClickTwo[0]()
-          .then((res) => {
+          .then(() => {
             props.updateButtonColor(props.id);
           })
         }}

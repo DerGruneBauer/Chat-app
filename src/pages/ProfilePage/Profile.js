@@ -75,7 +75,7 @@ const Profile = (props) => {
 
   const mappedPosts = selectedPosts.map((post) => (
     <PostCard
-      key={post.post_id}
+      key={"post"+post.post_id}
       id={post.post_id}
       user={props.user}
       displayName={post.display_name}

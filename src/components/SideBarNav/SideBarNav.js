@@ -34,7 +34,7 @@ const SideBarNav = (props) => {
 
   const mappedSavedItems = savedItemsNav.map((item) => (
     <button
-      key={item.id}
+      key={"navItem" + item.id}
       id={item.id}
       onClick={(e) => {
         updateSelectedItem(item.id);
@@ -48,7 +48,7 @@ const SideBarNav = (props) => {
 
   const mappedSlidingBar = slidingBar.map((bar) => (
     <div
-      key={bar.id}
+      key={"bar" + bar.id}
       id={bar.id}
       className={
         bar.isActive ? styles.activeSlidingBar : styles.unactiveSlidingBar

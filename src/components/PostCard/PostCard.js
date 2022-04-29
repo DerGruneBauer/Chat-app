@@ -15,7 +15,6 @@ const PostCard = (props) => {
 
   }
 
-  const [isLoading, setIsLoading] = useState(true);
   const [commentsRetweetsSaves, setCommentsRetweetsSaves] = useState([
     {
       comments: [],
@@ -58,37 +57,19 @@ const PostCard = (props) => {
       activeColor: "blue",
       url: bookmarkIcon,
       onClick: [() => UserApi.updateUserSavedPosts(props.id, props.user.userId),() => UserApi.updateUserSavedPostsUnsave(props.id, props.user.userId)],
-      onClickTwo: [() => PostsApi.updatePostsSaves(props.id, props.user.userId),() => PostsApi.updatePostsSavesUnsave(props.id, props.user.userId)],
+      onClickTwo: [() => PostsApi.updatePostsSaves(props.id, props.user.uid),() => PostsApi.updatePostsSavesUnsave(props.id, props.user.uid)],
       alt: "Save action button icon",
     },
   ]);
 
-  // useEffect(() => {
-  //   checkIfUserHasInteracted(props.user.userId, props.id);
-  // })
-
-  const setInitialButtonState = (id) => {
-    const updatedActionButtons = cardActionButtons.map((button) => {
-      if(button.id === id) {
-        return {...button, isActive: true};
-      }
-      return button;
-    })
-    setCardActionButtons(updatedActionButtons);
-  };
-
-  const updateActiveState = (id) => {
-      const updatedActionButtons = cardActionButtons.map((button) => {
-      return button.id === id ? {...button, isActive: !button.isActive} : {...button, isActive: button.isActive}
-    });
-    setCardActionButtons(updatedActionButtons);
-  }
+  useEffect(() => {
+    checkIfUserHasInteracted(props.user.userId, props.id);
+  }, [])
 
   const checkIfUserHasInteracted = (userId, postid) => {
     PostsApi.getPostLikesRetweetsCommentsSaves(postid)
     .then((response) =>  response.json())
     .then((res) => {
-      console.log(res);
       setCommentsRetweetsSaves(res);
       if(res[0].likes.includes(userId)){
         setInitialButtonState(2);
@@ -96,14 +77,50 @@ const PostCard = (props) => {
       if(res[0].saves.includes(userId)){
         setInitialButtonState(3);
       }
-      setIsLoading(false);
     })
   }
-  
 
+  const setInitialButtonState = (id) => {
+
+    const updatedActionButtons = cardActionButtons.map((button) => {
+      if(button.id === id) {
+        return {...button, isActive: true};
+      }
+      return button;
+      //return button.id === id ? {...button, isActive: true} : button;
+    })
+
+    setCardActionButtons(updatedActionButtons);
+  };
+
+  //seperate postcards are affecting each other - key issue?
+  //if one post has like it isnt showing up on page load
+  //if a post is saved and liked the like will not show up, but is present in db
+  const updateActiveState = (id) => {
+
+     getPostLikesRetweetsCommentsSaves(props.id);
+
+      const updatedActionButtons = cardActionButtons.map((button) => {
+      return button.id === id ? 
+      {...button, isActive: !button.isActive} : {...button, isActive: button.isActive}
+    });
+
+    console.log(`Post ${props.id}:`)
+    console.log(updatedActionButtons);
+    setCardActionButtons(updatedActionButtons);
+  }
+
+  const getPostLikesRetweetsCommentsSaves = (postId) => {
+    PostsApi.getPostLikesRetweetsCommentsSaves(postId)
+      .then((response) => response.json())
+      .then((res) => {
+        setCommentsRetweetsSaves(res);
+      });
+  };
+  
   const mappedActionBar = cardActionButtons.map((button) => (
     <CardActionButton
-    key={button.id}
+    key={`actionButton-${button.id}-${props.id}`}
     id={button.id}
     onClick={button.onClick}
     onClickTwo={button.onClickTwo}
@@ -116,7 +133,7 @@ const PostCard = (props) => {
   )
   );
 
-  const loadedPages = (
+  return (
     <div className={styles.postCardContainer}>
       <div className={styles.cardOwnerInfo}>
         <img></img>
@@ -140,9 +157,7 @@ const PostCard = (props) => {
         <input placeholder="Tweet your reply"></input>
       </div>
     </div>
-  )
-
-  return <>{isLoading ? "Loading" : loadedPages}</>;
+  );
 };
 
 export default PostCard;
