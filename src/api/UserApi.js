@@ -40,6 +40,16 @@ let UserApi = {
         return fetch(`http://localhost:8080/users/${userid}/likedposts`, requestOptions)
     },
 
+    getUserSavedPostArray(userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'GET',
+            headers: headers
+        };
+        return fetch(`http://localhost:8080/users/${userid}/savedposts`, requestOptions)
+    },
+
     updateUserNameAndPhoto(uid, userData){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");

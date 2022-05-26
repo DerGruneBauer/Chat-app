@@ -5,13 +5,13 @@ import profileIcon from "../../assets/account.svg";
 import gearIcon from "../../assets/gearIcon.svg";
 import { logout } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import { setUserProperties } from "@firebase/analytics";
 
 //Add functionality so that when user clicks outside of modal
 //and modal is open it will shut automatically without needing to
 //click profile button again
 
-//make logout button functional+look into managing users with firebase
-const Modal = (props) => {
+const MenuModal = (props) => {
   const navigate = useNavigate();
 
   const navigateToProfile = () => {
@@ -20,6 +20,8 @@ const Modal = (props) => {
 
   const navigateLogout = () => {
     navigate("/");
+    props.signOut(false);
+    props.setUserUid("");
   };
 
   const navigateToSettings = () => {
@@ -49,8 +51,9 @@ const Modal = (props) => {
       </div>
       <button
         onClick={() => {
-          logout();
           navigateLogout();
+          props.updateModalDisplay(false);
+          logout();
         }}
         className={styles.signOut}
       >
@@ -60,4 +63,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default MenuModal;

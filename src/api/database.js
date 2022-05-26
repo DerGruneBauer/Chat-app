@@ -41,6 +41,16 @@ db.get("/users/:userid/likedposts", async (req, res) => {
   res.json(post.rows);
 });
 
+//Get array of ids of user's saved posts
+db.get("/users/:userid/savedposts", async (req, res) => {
+  const data = req.params;
+  const post = await pool.query(
+    "SELECT saved_posts FROM users WHERE user_id = $1",
+    [data.userid]
+  );
+  res.json(post.rows);
+});
+
 //Update when user unsaves a post - delete post to user's saved posts list
 db.put("/users/:userid/savedposts/:postid/unsave", async (req, res) => {
   const data = req.params;

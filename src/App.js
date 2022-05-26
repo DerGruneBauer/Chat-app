@@ -7,7 +7,7 @@ import Home from "./pages/HomePage/Home";
 import Profile from "./pages/ProfilePage/Profile";
 import Header from "./components/Header/Header";
 import NavigationBar from "./components/NavigationBar/NavigationBar";
-import UserSettings from "./components/Modal/Modal";
+import MenuModal from "./components/Modal/Modal";
 import Explore from "./pages/ExplorePage/Explore";
 import Bookmarks from "./pages/BookmarksPage/Bookmarks";
 import Settings from "./pages/SettingsPage/SettingsPage";
@@ -52,7 +52,7 @@ function App() {
     if (uid != "") {
       getUserInformation(uid).then((res) => {
         setLoggedInUser(res);
-        setIsLoggedIn(true);
+        updateLoggedInStatus(true);
       });
     }
   }, [uid]);
@@ -71,13 +71,14 @@ function App() {
           <Header
             updateModalDisplay={updateModalStatus}
             modalStatus={showSettingsModal}
-            signOut={updateLoggedInStatus}
             user={user}
           />
-          <UserSettings
+          <MenuModal
             updateModalDisplay={updateModalStatus}
             modalStatus={showSettingsModal}
             user={user}
+            signOut={updateLoggedInStatus}
+            setUserUid={updateUid}
           />
           <Routes>
             <Route exact path="/" element={<Home user={user} />} />

@@ -17,51 +17,54 @@ const Bookmarks = (props) => {
   };
 
   useEffect(() => {
-    getUserTweets();
+    getTweetsBySelectedCategory();
   }, [selectedNavItem]);
 
-  const getUserTweets = async () => {
+  const getTweetsBySelectedCategory = async () => {
     if (selectedNavItem === "Tweets") {
-      setSelectedPosts([]);
+      let postArray = await UserApi.getUserSavedPostArray(props.user.userId)
+        .then((res) => res.json())
+        .then((result) => {
+          return result[0].saved_posts;
+        });
+      getAllPostsForSelectedSection(postArray);
     } else if (selectedNavItem === "Tweets & Replies") {
       setSelectedPosts([]);
-      console.log("showing tweets and replies");
     } else if (selectedNavItem === "Media") {
       setSelectedPosts([]);
-      console.log("showing media");
     } else {
       let postArray = await UserApi.getUserLikedPostArray(props.user.userId)
         .then((res) => res.json())
         .then((result) => {
           return result[0].liked_posts;
         });
-
-      let mappedRequest = postArray.map((post) =>
-        PostApi.getPostsByPostId(post)
-      );
-
-      Promise.all(mappedRequest)
-        .then((responses) => {
-          return responses;
-        })
-        .then((responses) => Promise.all(responses.map((r) => r.json())))
-        .then((posts) => {
-          let finalPosts = posts.map((post) => {
-            console.log(post[0]);
-            return post[0];
-          });
-          setSelectedPosts(finalPosts);
-        });
+      getAllPostsForSelectedSection(postArray);
     }
+  };
+
+  const getAllPostsForSelectedSection = async (postArray) => {
+    let mappedRequest = postArray.map((post) => PostApi.getPostsByPostId(post));
+
+    Promise.all(mappedRequest)
+      .then((responses) => {
+        return responses;
+      })
+      .then((responses) => Promise.all(responses.map((r) => r.json())))
+      .then((posts) => {
+        let finalPosts = posts.map((post) => {
+          return post[0];
+        });
+        setSelectedPosts(finalPosts);
+      });
   };
 
   const formateDate = (date, time) => {
     return `${date.substring(0, 10)} at ${time.substring(0, 5)}`;
   };
 
-  const mappedPosts = selectedPosts.map((post) => (
+  const mappedPosts = selectedPosts.map((post, index) => (
     <PostCard
-      key={post.post_id}
+      key={`post${post.post_id}${index}`}
       id={post.post_id}
       user={props.user}
       displayName={post.display_name}
