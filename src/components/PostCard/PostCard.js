@@ -14,7 +14,7 @@ const PostCard = (props) => {
   const placeholderMethod = () => {
 
   }
-
+  
   const [commentsRetweetsSaves, setCommentsRetweetsSaves] = useState([
     {
       comments: [],
@@ -63,52 +63,48 @@ const PostCard = (props) => {
   ]);
 
   useEffect(() => {
-    checkIfUserHasInteracted(props.user.userId, props.id);
+    checkInitialState(props.user.userId, props.id);
   }, [])
 
-  const checkIfUserHasInteracted = (userId, postid) => {
-    PostsApi.getPostLikesRetweetsCommentsSaves(postid)
-    .then((response) =>  response.json())
-    .then((res) => {
-      setCommentsRetweetsSaves(res);
-      if(res[0].likes.includes(userId)){
-        setInitialButtonState(2);
-      }
-      if(res[0].saves.includes(userId)){
-        setInitialButtonState(3);
-      }
-    })
+  const checkInitialState = (userId, postid) => {
+      var returnArray = [false, false, false, false];
+      PostsApi.getPostLikesRetweetsCommentsSaves(postid)
+      .then((response) =>  response.json())
+      .then((res) => {
+        setCommentsRetweetsSaves(res);
+        if(res[0].likes.includes(userId)){
+          returnArray[2] = true;
+        }
+        if(res[0].saves.includes(userId)){
+          returnArray[3] = true;
+        }
+        setInitialButtonState(returnArray)
+      })
   }
 
-  const setInitialButtonState = (id) => {
+  const setInitialButtonState = (activeArray) => {
 
-    const updatedActionButtons = cardActionButtons.map((button) => {
-      if(button.id === id) {
+    const updatedActionButtons = cardActionButtons.map((button, index) => {
+      if(activeArray[index]) {
         return {...button, isActive: true};
       }
       return button;
-      //return button.id === id ? {...button, isActive: true} : button;
     })
 
     setCardActionButtons(updatedActionButtons);
   };
 
-  //seperate postcards are affecting each other - key issue?
-  //if one post has like it isnt showing up on page load
-  //if a post is saved and liked the like will not show up, but is present in db
   const updateActiveState = (id) => {
+    getPostLikesRetweetsCommentsSaves(props.id);
 
-     getPostLikesRetweetsCommentsSaves(props.id);
-
-      const updatedActionButtons = cardActionButtons.map((button) => {
-      return button.id === id ? 
-      {...button, isActive: !button.isActive} : {...button, isActive: button.isActive}
+    const updatedActionButtons = cardActionButtons.map((button) => {
+      return button.id === id
+        ? { ...button, isActive: !button.isActive }
+        : { ...button, isActive: button.isActive };
     });
 
-    console.log(`Post ${props.id}:`)
-    console.log(updatedActionButtons);
     setCardActionButtons(updatedActionButtons);
-  }
+  };
 
   const getPostLikesRetweetsCommentsSaves = (postId) => {
     PostsApi.getPostLikesRetweetsCommentsSaves(postId)
@@ -118,9 +114,9 @@ const PostCard = (props) => {
       });
   };
   
-  const mappedActionBar = cardActionButtons.map((button) => (
+  const mappedActionBar = cardActionButtons.map((button, index) => (
     <CardActionButton
-    key={`actionButton-${button.id}-${props.id}`}
+    key={`actionButton-${button.id}${index}`}
     id={button.id}
     onClick={button.onClick}
     onClickTwo={button.onClickTwo}

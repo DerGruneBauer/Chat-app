@@ -73,9 +73,9 @@ const Profile = (props) => {
     return `${date.substring(0, 10)} at ${time.substring(0, 5)}`;
   };
 
-  const mappedPosts = selectedPosts.map((post) => (
+  const mappedPosts = selectedPosts.map((post, index) => (
     <PostCard
-      key={"post"+post.post_id}
+      key={"post"+index}
       id={post.post_id}
       user={props.user}
       displayName={post.display_name}
