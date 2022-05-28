@@ -92,11 +92,11 @@ db.put("/users/:userid/likedposts/:postid/like", async (req, res) => {
 });
 
 //Update user display name and photo url from uid
-db.put("users/:uid", async (req,res) => {
+db.put("/users/:uid", async (req,res) => {
   const data = req.params;
   const bodyData = req.body;
-  const update = await pool.query("UPDATE users SET display_name=$1, photo_url=$2 WHERE user_id=$3",
-  [bodyData.display_name, bodyData.photo_url, data.uid]
+  const update = await pool.query("UPDATE users SET display_name=$1, photo_url=$2, bio=$3 WHERE uid=$4",
+  [bodyData.displayName, bodyData.photoUrl, bodyData.bio, data.uid]
   );
   res.json(update.rows);
 })
@@ -157,7 +157,7 @@ db.get("/posts", async (req, res) => {
 db.get("/posts/users/:userid", async (req, res) => {
   const data = req.params;
   const post = await pool.query(
-    "SELECT posts.*, users.display_name FROM posts INNER JOIN users ON posts.user_id=$1",
+    "SELECT posts.*, users.display_name FROM posts INNER JOIN users ON posts.user_id=users.user_id WHERE posts.user_id=$1",
     [data.userid]
   );
   res.json(post.rows.reverse());

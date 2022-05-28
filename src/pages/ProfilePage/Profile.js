@@ -36,14 +36,13 @@ const Profile = (props) => {
       await PostApi.getPostsByUserId(props.user.userId)
         .then((response) => response.json())
         .then((res) => {
+          console.log(res);
           setSelectedPosts(res.reverse());
         });
     } else if (selectedNavItem === "Tweets & Replies") {
       setSelectedPosts([]);
-      console.log("showing tweets and replies");
     } else if (selectedNavItem === "Media") {
       setSelectedPosts([]);
-      console.log("showing media");
     } else {
       let postArray = await UserApi.getUserLikedPostArray(props.user.userId)
         .then((res) => res.json())

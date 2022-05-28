@@ -21,9 +21,11 @@ const Settings = (props) => {
     };
 
     props.updateUser(await updateUserProfile(props.user.uid, updatedInfo));
-    await UserApi.updateUserNameAndPhoto(props.user.uid, {
+    
+    await UserApi.updateUserInformation(props.user.uid, {
       displayName: updatedDisplayName,
       photoUrl: updatedPhotoUrl,
+      bio: updatedBio
     });
   };
 
