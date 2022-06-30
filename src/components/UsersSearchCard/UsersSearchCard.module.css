@@ -30,6 +30,10 @@
   margin-bottom: 5px;
 }
 
+.profileLink:visited {
+  color: black;
+}
+
 .cardData span:last-child {
   font-size: 13px;
   color: rgb(155, 155, 155);
@@ -54,6 +58,10 @@
   border: none;
   padding: 7px 20px;
   margin-top: 10px;
+}
+
+.cardTop > button:hover {
+  background-color: #2b5dc7;
 }
 
 .cardTop > button > img {

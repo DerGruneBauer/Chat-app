@@ -28,9 +28,7 @@ function App() {
     bio: "",
     userId: "",
   });
-
-  //may run into issue where user types URL into bar and receives login/register even through already logged in.
-  //If logged in should redirect to homepage when trying to access register/login.
+  const [modalRef, setModalRef] = useState([{}]);
 
   const updateLoggedInStatus = (bool) => {
     setIsLoggedIn(bool);
@@ -43,6 +41,18 @@ function App() {
   const updateModalStatus = (bool) => {
     setShowSettingsModal(bool);
   };
+
+  const updateModalRefs = (ref) => {
+    if(!modalRef.includes(ref.current)){
+      setModalRef(modalRef => [...modalRef, ref.current]);
+    }
+  }
+
+  window.onclick = function(event) {
+    if(!modalRef.includes(event.target)) {
+      updateModalStatus(false);
+    }
+  }
 
   const updateUid = (uid) => {
     setUid(uid);
@@ -72,13 +82,16 @@ function App() {
             updateModalDisplay={updateModalStatus}
             modalStatus={showSettingsModal}
             user={user}
+            updateModalRefs={updateModalRefs}
           />
           <MenuModal
+            onClick={e => e.stopPropagation()}
             updateModalDisplay={updateModalStatus}
             modalStatus={showSettingsModal}
             user={user}
             signOut={updateLoggedInStatus}
             setUserUid={updateUid}
+            updateModalRefs={updateModalRefs}
           />
           <Routes>
             <Route exact path="/" element={<Home user={user} />} />

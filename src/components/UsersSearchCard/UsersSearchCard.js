@@ -5,10 +5,6 @@ import { Link } from "react-router-dom";
 
 const UsersSearchCard = (props) => {
 
-  const navigateToProfile = () => {
-    console.log(props.user.uid);
-  }
-
   return (
     <div className={styles.cardContainer}>
       <div className={styles.cardTop}>
@@ -16,8 +12,7 @@ const UsersSearchCard = (props) => {
           <img></img>
           <div className={styles.cardData}>
             <span>
-              {/* <a onClick={navigateToProfile}>{props.displayName}</a> */}
-              <Link to={`/profile/${props.uid}`}>{props.displayName}</Link>
+              <Link to={`/profile/${props.uid}`} className={styles.profileLink}>{props.displayName}</Link>
             </span>
             <span>{props.followers} followers</span>
           </div>

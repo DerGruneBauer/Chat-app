@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./Explore.module.css";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import SideBarNav from "../../components/SideBarNav/SideBarNav";
-import PostCard from "../../components/PostCard/PostCard";
 import UserApi from "../../api/UserApi";
 import UsersSearchCard from "../../components/UsersSearchCard/UsersSearchCard";
 

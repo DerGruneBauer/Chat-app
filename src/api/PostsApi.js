@@ -20,6 +20,16 @@ let PostApi = {
         return fetch(`http://localhost:8080/posts/users/${userid}`, requestOptions)
     },
 
+    getPostsByUid(uid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'GET',
+            headers: headers
+        };
+        return fetch(`http://localhost:8080/posts/users/uid/${uid}`, requestOptions)
+    },
+
     getPostsByPostId(postid){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");

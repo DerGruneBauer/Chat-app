@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import styles from "./Modal.module.css";
 import logoutIcon from "../../assets/logout.svg";
 import profileIcon from "../../assets/account.svg";
@@ -7,15 +7,14 @@ import { logout } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import { setUserProperties } from "@firebase/analytics";
 
-//Add functionality so that when user clicks outside of modal
-//and modal is open it will shut automatically without needing to
-//click profile button again
-
 const MenuModal = (props) => {
+
+  const modalContainer = useRef(null);
+
   const navigate = useNavigate();
 
   const navigateToProfile = () => {
-    navigate("/profile");
+    navigate(`/profile/${props.user.uid}`);
   };
 
   const navigateLogout = () => {
@@ -32,6 +31,8 @@ const MenuModal = (props) => {
     <div
       style={{ display: `${props.modalStatus ? "inline-flex" : "none"}` }}
       className={styles.modalContainer}
+      ref={modalContainer}
+      onClick={props.updateModalRefs(modalContainer)}
     >
       <div className={styles.profileSettingContainer}>
         <button

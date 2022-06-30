@@ -21,6 +21,12 @@ const Profile = (props) => {
 
   const [selectedUser, setSelectedUser] = useState({});
 
+
+  useEffect(() => {
+    getUserProfileInformation();
+    getUserTweets();
+  }, [selectedNavItem]);
+
   const updateShownItems = (e) => {
     setSelectedNavItem(e.target.innerText);
   };
@@ -33,34 +39,19 @@ const Profile = (props) => {
       });
   }
 
-  useEffect(() => {
-    getUserTweets();
-    getUserProfileInformation();
-  }, [selectedNavItem]);
-
-  const profilePicture = (
-    <img
-      alt="your profile icon"
-      className={styles.profilePicture}
-      src={selectedUser.photo_url}
-    />
-  );
-
-  const defaultProfilePicture = <div className={styles.defaultPicture} />;
-
   const getUserTweets = async () => {
     if (selectedNavItem === "Tweets") {
-      await PostApi.getPostsByUserId(props.user.userId)
+      await PostApi.getPostsByUid(urlUid.uid)
         .then((response) => response.json())
         .then((res) => {
           setSelectedPosts(res.reverse());
-        });
+        })
     } else if (selectedNavItem === "Tweets & Replies") {
       setSelectedPosts([]);
     } else if (selectedNavItem === "Media") {
       setSelectedPosts([]);
     } else {
-      let postArray = await UserApi.getUserLikedPostArray(props.user.userId)
+      let postArray = await UserApi.getUserLikedPostArray(selectedUser.user_id)
         .then((res) => res.json())
         .then((result) => {
           return result[0].liked_posts;
@@ -87,6 +78,16 @@ const Profile = (props) => {
   const formateDate = (date, time) => {
     return `${date.substring(0, 10)} at ${time.substring(0, 5)}`;
   };
+
+  const profilePicture = (
+    <img
+      alt="your profile icon"
+      className={styles.profilePicture}
+      src={selectedUser.photo_url}
+    />
+  );
+
+  const defaultProfilePicture = <div className={styles.defaultPicture} />;
 
   const mappedPosts = selectedPosts.map((post, index) => (
     <PostCard

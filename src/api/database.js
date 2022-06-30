@@ -223,6 +223,16 @@ db.get("/posts/users/:userid", async (req, res) => {
   res.json(post.rows.reverse());
 });
 
+//Get all posts by user uid
+db.get("/posts/users/uid/:uid", async (req, res) => {
+  const data = req.params;
+  const post = await pool.query(
+    "SELECT posts.*, users.display_name FROM posts INNER JOIN users ON posts.user_id=users.user_id WHERE users.uid=$1",
+    [data.uid]
+  );
+  res.json(post.rows.reverse());
+});
+
 //Get post by post id
 db.get("/posts/:postid", async (req, res) => {
   const data = req.params;

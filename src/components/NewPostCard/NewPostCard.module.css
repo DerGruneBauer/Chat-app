@@ -74,3 +74,7 @@
   border: none;
   padding: 8px 25px;
 }
+
+.postOptions > button:hover {
+  background-color: #2b5dc7;
+}
