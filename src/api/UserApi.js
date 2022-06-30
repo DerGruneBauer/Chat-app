@@ -50,6 +50,26 @@ let UserApi = {
         return fetch(`http://localhost:8080/users/${userid}/savedposts`, requestOptions)
     },
 
+    getUserFollowingArray(userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'GET',
+            headers: headers
+        };
+        return fetch(`http://localhost:8080/users/${userid}/following`, requestOptions)
+    },
+
+    getUserFollowersArray(userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'GET',
+            headers: headers
+        };
+        return fetch(`http://localhost:8080/users/${userid}/followers`, requestOptions)
+    },
+
     updateUserInformation(uid, userData){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
@@ -61,14 +81,44 @@ let UserApi = {
         return fetch(`http://localhost:8080/users/${uid}`, requestOptions)
     },
 
-    updateUserSavedPosts(postid, userid){
+    updateUserFollowersSave(useridother, userid){
         var headers = new Headers();
         headers.append("Content-Type", "application/json");
         var requestOptions = {
             method: 'PUT',
             headers: headers,
         };
-        return fetch(`http://localhost:8080/users/${userid}/savedposts/${postid}/save`, requestOptions); 
+        return fetch(`http://localhost:8080/users/${userid}/followers/${useridother}/save`, requestOptions); 
+    },
+
+    updateUserFollowingSave(useridother, userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/users/${userid}/following/${useridother}/save`, requestOptions); 
+    },
+
+    updateUserFollowingUnsave(useridother, userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/users/${userid}/following/${useridother}/unsave`, requestOptions)
+    },
+
+    updateUserFollowersUnsave(useridother, userid){
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'PUT',
+            headers: headers,
+        };
+        return fetch(`http://localhost:8080/users/${userid}/followers/${useridother}/unsave`, requestOptions)
     },
 
     updateUserSavedPostsUnsave(postid, userid){

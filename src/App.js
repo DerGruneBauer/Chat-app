@@ -82,20 +82,10 @@ function App() {
           />
           <Routes>
             <Route exact path="/" element={<Home user={user} />} />
-            <Route exact path="/profile" element={<Profile user={user} />} />
-            <Route
-              exact
-              path="/settings"
-              element={
-                <Settings updateUser={updateUsersInformation} user={user} />
-              }
-            />
+            <Route path="/profile/:uid" element={<Profile user={user} />} />
+            <Route exact path="/settings" element={<Settings updateUser={updateUsersInformation} user={user} />} />
             <Route exact path="/explore" element={<Explore user={user} />} />
-            <Route
-              exact
-              path="/bookmarks"
-              element={<Bookmarks user={user} />}
-            />
+            <Route exact path="/bookmarks" element={<Bookmarks user={user} />} />
           </Routes>
           <NavigationBar />
         </div>

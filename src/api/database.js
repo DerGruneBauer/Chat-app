@@ -51,6 +51,66 @@ db.get("/users/:userid/savedposts", async (req, res) => {
   res.json(post.rows);
 });
 
+//Get array of ids of user's followers
+db.get("/users/:userid/followers", async (req, res) => {
+  const data = req.params;
+  const post = await pool.query(
+    "SELECT followers FROM users WHERE user_id = $1",
+    [data.userid]
+  );
+  res.json(post.rows);
+});
+
+//Get array of ids of who user is following
+db.get("/users/:userid/following", async (req, res) => {
+  const data = req.params;
+  const post = await pool.query(
+    "SELECT following FROM users WHERE user_id = $1",
+    [data.userid]
+  );
+  res.json(post.rows);
+});
+
+//Update when current user unfollows another user
+db.put("/users/:useridcurrent/following/:useridother/unsave", async (req, res) => {
+  const data = req.params;
+  let update = await pool.query(
+      "UPDATE users SET following = array_remove(following, $2) WHERE user_id = $1",
+      [data.useridcurrent, data.useridother]
+    );
+  res.json(update.rows);
+});
+
+//Update when another user unfollows current user
+db.put("/users/:useridcurrent/followers/:useridother/unsave", async (req, res) => {
+  const data = req.params;
+  let update = await pool.query(
+      "UPDATE users SET followers = array_remove(followers, $2) WHERE user_id = $1",
+      [data.useridcurrent, data.useridother]
+    );
+  res.json(update.rows);
+});
+
+//Update when current user followers another user
+db.put("/users/:useridcurrent/following/:useridother/save", async (req, res) => {
+  const data = req.params;
+   let update = await pool.query(
+      "UPDATE users SET following = array_prepend($2 , following) WHERE user_id = $1",
+      [data.useridcurrent, data.useridother]
+   );
+  res.json(update.rows);
+});
+
+//Update when another user follows current user
+db.put("/users/:useridcurrent/followers/:useridother/save", async (req, res) => {
+  const data = req.params;
+   let update = await pool.query(
+      "UPDATE users SET followers = array_prepend($2 , followers) WHERE user_id = $1",
+      [data.useridcurrent, data.useridother]
+   );
+  res.json(update.rows);
+});
+
 //Update when user unsaves a post - delete post to user's saved posts list
 db.put("/users/:userid/savedposts/:postid/unsave", async (req, res) => {
   const data = req.params;
@@ -167,7 +227,7 @@ db.get("/posts/users/:userid", async (req, res) => {
 db.get("/posts/:postid", async (req, res) => {
   const data = req.params;
   const post = await pool.query(
-    "SELECT posts.*, users.display_name FROM posts INNER JOIN users ON posts.user_id=(SELECT user_id FROM posts WHERE post_id=$1) WHERE post_id=$1",
+    "SELECT posts.*, users.display_name FROM posts INNER JOIN users ON posts.user_id=users.user_id WHERE posts.post_id=$1",
     [data.postid]
   );
   res.json(post.rows);

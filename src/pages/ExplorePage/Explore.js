@@ -47,6 +47,7 @@ const Explore = (props) => {
       userName={user.user_name}
       photoUrl={user.photo_url}
       bio={user.bio}
+      uid={user.uid}
       followers={"200k"}/>
   ));
 

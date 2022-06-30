@@ -5,27 +5,44 @@ import PostCard from "../../components/PostCard/PostCard";
 import SideBarNav from "../../components/SideBarNav/SideBarNav";
 import PostApi from "../../api/PostsApi";
 import UserApi from "../../api/UserApi";
+import {
+  useParams
+} from "react-router-dom";
 
 const Profile = (props) => {
+
+  let urlUid = useParams();
+
   const [selectedPosts, setSelectedPosts] = useState([]);
 
   const [selectedNavItem, setSelectedNavItem] = useState("Tweets");
 
   const sideBarNav = ["Tweets", "Tweets & Replies", "Media", "Likes"];
 
+  const [selectedUser, setSelectedUser] = useState({});
+
   const updateShownItems = (e) => {
     setSelectedNavItem(e.target.innerText);
   };
 
+  const getUserProfileInformation = async () => {
+    await UserApi.getUserById(urlUid.uid)
+      .then((response) => response.json())
+      .then((res) => {
+        setSelectedUser(res[0]);
+      });
+  }
+
   useEffect(() => {
     getUserTweets();
+    getUserProfileInformation();
   }, [selectedNavItem]);
 
   const profilePicture = (
     <img
       alt="your profile icon"
       className={styles.profilePicture}
-      src={props.user.photoUrl}
+      src={selectedUser.photo_url}
     />
   );
 
@@ -36,7 +53,6 @@ const Profile = (props) => {
       await PostApi.getPostsByUserId(props.user.userId)
         .then((response) => response.json())
         .then((res) => {
-          console.log(res);
           setSelectedPosts(res.reverse());
         });
     } else if (selectedNavItem === "Tweets & Replies") {
@@ -93,10 +109,10 @@ const Profile = (props) => {
   const loadedProfile = (
     <>
       { 1+1 === 2 ? defaultBackgroundImage : <img alt="The user's selected background." className={styles.backgroundImage} />}
-      {props.user.photoUrl === "" ? defaultProfilePicture : profilePicture}
+      {selectedUser.photo_url ? profilePicture : defaultProfilePicture}
       <div className={styles.userInfo}>
         <h2>
-          {props.user.displayName === "" ? "Edit name in settings" : props.user.displayName}
+          {selectedUser.display_name ? selectedUser.display_name : selectedUser.user_name}
         </h2>
         <div className={styles.userStats}>
           <span>
@@ -107,9 +123,7 @@ const Profile = (props) => {
           </span>
         </div>
         <p>
-          {props.user.bio === ""
-            ? "Edit user bio in settings."
-            : props.user.bio}
+          {selectedUser.bio ? selectedUser.bio : "Edit user bio in settings."}
         </p>
         <button>
           <img src={followIcon} alt="Click to follow this user." />
