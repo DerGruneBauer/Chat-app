@@ -8,7 +8,7 @@
   margin-bottom: 15px;
 }
 
-/*Top of card with pic, info, and button */
+/*Top of card with profile pic, info, and follow button */
 .cardTop {
   display: flex;
 }
@@ -72,7 +72,7 @@
     brightness(116%) contrast(100%);
 }
 
-/* Middle of card with user's profile text */
+/* Middle of card with user's bio text */
 
 .cardContainer > p {
     font-size: 15px;

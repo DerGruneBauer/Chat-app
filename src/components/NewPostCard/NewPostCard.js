@@ -66,7 +66,7 @@ const NewPostCard = (props) => {
             reply
           </button>
         </div>
-        <button onClick={submitNewPost}>Tweet</button>
+        <button disabled={!postText} onClick={submitNewPost}>Tweet</button>
       </div>
     </div>
   );

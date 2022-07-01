@@ -81,11 +81,11 @@ db.put("/users/:useridcurrent/following/:useridother/unsave", async (req, res) =
   res.json(update.rows);
 });
 
-//Update when another user unfollows current user
+//Update other users followers column when current user unfollows
 db.put("/users/:useridcurrent/followers/:useridother/unsave", async (req, res) => {
   const data = req.params;
   let update = await pool.query(
-      "UPDATE users SET followers = array_remove(followers, $2) WHERE user_id = $1",
+      "UPDATE users SET followers = array_remove(followers, $1) WHERE user_id = $2",
       [data.useridcurrent, data.useridother]
     );
   res.json(update.rows);
@@ -101,11 +101,11 @@ db.put("/users/:useridcurrent/following/:useridother/save", async (req, res) => 
   res.json(update.rows);
 });
 
-//Update when another user follows current user
+//Update other users followers column when current user follows
 db.put("/users/:useridcurrent/followers/:useridother/save", async (req, res) => {
   const data = req.params;
    let update = await pool.query(
-      "UPDATE users SET followers = array_prepend($2 , followers) WHERE user_id = $1",
+      "UPDATE users SET followers = array_prepend($1 , followers) WHERE user_id = $2",
       [data.useridcurrent, data.useridother]
    );
   res.json(update.rows);

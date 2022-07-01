@@ -1,31 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Profile.module.css";
-import followIcon from "../../assets/followUser.svg";
 import PostCard from "../../components/PostCard/PostCard";
 import SideBarNav from "../../components/SideBarNav/SideBarNav";
 import PostApi from "../../api/PostsApi";
 import UserApi from "../../api/UserApi";
-import {
-  useParams
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
+import FollowButton from "../../components/FollowButton/FollowButton";
+
+//follow button needs below functionality
+//should show up as already following yourself OR button for following self
+//should not be present
 
 const Profile = (props) => {
 
   let urlUid = useParams();
-
-  const [selectedPosts, setSelectedPosts] = useState([]);
-
-  const [selectedNavItem, setSelectedNavItem] = useState("Tweets");
-
+  const selectedUser = useRef();
   const sideBarNav = ["Tweets", "Tweets & Replies", "Media", "Likes"];
-
-  const [selectedUser, setSelectedUser] = useState({});
-
+  const [selectedPosts, setSelectedPosts] = useState([]);
+  const [selectedNavItem, setSelectedNavItem] = useState("Tweets");
+  const [followButton, setFollowButton] = useState({
+    isActive: false,
+    onInactiveClick: [
+      () => UserApi.updateUserFollowingSave(selectedUser.current.user_id, props.user.userId),
+      () => UserApi.updateUserFollowingUnsave(selectedUser.current.user_id, props.user.userId),
+    ],
+    onActiveClick: [
+      () => UserApi.updateUserFollowersSave(selectedUser.current.user_id, props.user.userId),
+      () => UserApi.updateUserFollowersUnsave(selectedUser.current.user_id, props.user.userId),
+    ],
+  });
 
   useEffect(() => {
     getUserProfileInformation();
     getUserTweets();
   }, [selectedNavItem]);
+
+  const checkInitialFollowButtonState = async () => {
+    await UserApi.getUserFollowingArray(props.user.userId)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res[0].following) {
+          if (res[0].following.includes(selectedUser.current.user_id)) {
+            setFollowButton({ ...followButton, isActive: true });
+          }
+        }
+      });
+  };
+
+  const updateActiveButtonState = () => {
+    setFollowButton({ ...followButton, isActive: !followButton.isActive });
+  };
 
   const updateShownItems = (e) => {
     setSelectedNavItem(e.target.innerText);
@@ -35,9 +59,12 @@ const Profile = (props) => {
     await UserApi.getUserById(urlUid.uid)
       .then((response) => response.json())
       .then((res) => {
-        setSelectedUser(res[0]);
+        selectedUser.current = res[0];
+      })
+      .then((res) => {
+        checkInitialFollowButtonState();
       });
-  }
+  };
 
   const getUserTweets = async () => {
     if (selectedNavItem === "Tweets") {
@@ -45,7 +72,7 @@ const Profile = (props) => {
         .then((response) => response.json())
         .then((res) => {
           setSelectedPosts(res.reverse());
-        })
+        });
     } else if (selectedNavItem === "Tweets & Replies") {
       setSelectedPosts([]);
     } else if (selectedNavItem === "Media") {
@@ -91,7 +118,7 @@ const Profile = (props) => {
 
   const mappedPosts = selectedPosts.map((post, index) => (
     <PostCard
-      key={"post"+index}
+      key={"post" + index}
       id={post.post_id}
       user={props.user}
       displayName={post.display_name}
@@ -105,15 +132,26 @@ const Profile = (props) => {
     />
   ));
 
-  const defaultBackgroundImage = <div className={styles.defaultBackgroundImage} />
+  const defaultBackgroundImage = (
+    <div className={styles.defaultBackgroundImage} />
+  );
 
   const loadedProfile = (
     <>
-      { 1+1 === 2 ? defaultBackgroundImage : <img alt="The user's selected background." className={styles.backgroundImage} />}
+      {1 + 1 === 2 ? (
+        defaultBackgroundImage
+      ) : (
+        <img
+          alt="The user's selected background."
+          className={styles.backgroundImage}
+        />
+      )}
       {selectedUser.photo_url ? profilePicture : defaultProfilePicture}
       <div className={styles.userInfo}>
         <h2>
-          {selectedUser.display_name ? selectedUser.display_name : selectedUser.user_name}
+          {selectedUser.display_name
+            ? selectedUser.display_name
+            : selectedUser.user_name}
         </h2>
         <div className={styles.userStats}>
           <span>
@@ -126,10 +164,12 @@ const Profile = (props) => {
         <p>
           {selectedUser.bio ? selectedUser.bio : "Edit user bio in settings."}
         </p>
-        <button>
-          <img src={followIcon} alt="Click to follow this user." />
-          Follow
-        </button>
+        <FollowButton
+          updateActiveState={updateActiveButtonState}
+          isActive={followButton.isActive}
+          onInactiveClick={followButton.onInactiveClick}
+          onActiveClick={followButton.onActiveClick}
+        />
       </div>
       <SideBarNav sideBarNav={sideBarNav} updateShownItems={updateShownItems} />
       <div className={styles.postSection}>{mappedPosts}</div>

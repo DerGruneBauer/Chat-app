@@ -17,7 +17,7 @@
   border-bottom: solid lightgray 0.5px;
 }
 
-/* Users profile image, their input text */
+/* Users profile image and their post's text */
 .postTextContainer {
   display: flex;
 }
@@ -36,7 +36,7 @@
   font-size: 16px;
 }
 
-/* Options to post image, set privacy, and post button */
+/* Icons and text for choosing post privacy and adding photo */
 .postOptions {
   display: flex;
   justify-content: space-between;
@@ -67,6 +67,7 @@
   margin-right: 5px;
 }
 
+/* Post Button */
 .postOptions > button {
   background-color: #2f64d6;
   border-radius: 5px;
@@ -77,4 +78,12 @@
 
 .postOptions > button:hover {
   background-color: #2b5dc7;
+}
+
+.postOptions > button:disabled {
+  background-color: #6a94ee;
+}
+
+.postOptions > button:disabled:hover {
+  cursor: default;
 }
